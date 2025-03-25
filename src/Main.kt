@@ -28,6 +28,127 @@ fun main() {
     MainWindow(app)         // Create and show the UI, using the app model
 }
 
+class Room(
+    val name: String,
+    var immediateContents: Item?,
+    var secretContents: Item?,
+    val desc: String,
+) {
+    var north: Room? = null
+    var east: Room? = null
+    var south: Room?= null
+    var west: Room? = null
+}
+
+class Item(val name: String) {
+
+}
+fun setupSubmarine(): Room {
+    val sea = Room("Sea",null,null,"the abyss")
+    val entrance = Room("Entrance",null,null,"the entrance")
+    val westCorridor = Room("WestCorridor",null,null,"logistics corridor")
+    val electrical = Room("Electrical",null,null,"wires and circuitry")
+    val storage = Room("Storage",null,null,"the warehouse")
+    val secStorage = Room("Secure Storage",null,null,"for valuables. It's locked.")
+    val moonpool = Room("Moonpool",null,null,"an exit")
+    val eastCorridor = Room("East Corridor",null,null,"crew corridor", )
+    val eastCorridor2 = Room("Further East Corridor",null,null,"crew corridor", )
+    val crew1 = Room("Crew 1",null,null,"crew 1")
+    val crew2 = Room("Crew 2",null,null,"crew 2")
+    val crew3 = Room("Crew 3",null,null,"crew 3")
+    val northCorridor = Room("North Corridor",null,null,"main corridor")
+    val northCorridor2 = Room("Further North Corridor",null,null,"main corridor")
+    val upperDeck = Room("Upper Deck",null,null,"The upper deck")
+    val bridge = Room("Bridge",null,null,"the main control room")
+    val captain = Room("Captain's quarters",null,null,"the captain's quarters")
+    val messHall = Room("Mess Hall",null,null,"where you eat")
+    val kitchen = Room("Kitchen",null,null,"kitchen")
+    val recRoom = Room("Rec Room",null,null,"rec room")
+    val comms = Room("Communications",null,null,"Radio & radar")
+    val engine = Room("Engine",null,null,"engine room")
+    val lab = Room("Lab",null,null,"chemicals galore")
+    val ballast = Room("Ballast",null,null,"ballast")
+    val medical = Room("Medical",null,null,"medical bay")
+
+    sea.north = entrance
+
+    entrance.north = northCorridor
+    entrance.east = eastCorridor
+    entrance.south = sea
+    entrance.west = westCorridor
+
+    westCorridor.north = electrical
+    westCorridor.east = entrance
+    westCorridor.west = storage
+
+    electrical.south = westCorridor
+    electrical.east = lab
+    electrical.north = engine
+
+    engine.north = ballast
+    engine.east = upperDeck
+    engine.south = electrical
+
+    ballast.east = bridge
+    ballast.south= engine
+
+    lab.east = northCorridor2
+    lab.south = medical
+    lab.west = electrical
+
+    medical.north = lab
+    medical.east = northCorridor2
+
+    storage.north = secStorage
+    storage.east = westCorridor
+    storage.west = moonpool
+
+    secStorage.south = storage
+    moonpool.east = storage
+
+    eastCorridor.west = entrance
+    eastCorridor.east = eastCorridor2
+    eastCorridor.north = crew1
+
+    eastCorridor2.west = eastCorridor
+    eastCorridor2.north = crew2
+    eastCorridor2.east = crew3
+
+    crew1.south = eastCorridor
+    crew2.south = eastCorridor2
+    crew3.west = eastCorridor2
+
+    northCorridor.north = northCorridor2
+    northCorridor.east = messHall
+    northCorridor.south = entrance
+    northCorridor.west = medical
+
+    northCorridor2.north = upperDeck
+    northCorridor2.south = northCorridor
+    northCorridor2.east = recRoom
+
+    upperDeck.north = bridge
+    upperDeck.south = northCorridor2
+    upperDeck.east = comms
+    upperDeck.west = engine
+
+    bridge.south = upperDeck
+    bridge.east = captain
+    bridge.west = ballast
+
+    captain.west = bridge
+
+    comms.west = upperDeck
+
+    messHall.north = recRoom
+    messHall.west = northCorridor
+    messHall.east = kitchen
+    kitchen.west = messHall
+    recRoom.south = messHall
+    recRoom.west = northCorridor2
+
+    return sea
+}
 
 /**
  * The application class (model)
@@ -36,18 +157,31 @@ fun main() {
  */
 class App() {
     // Constants defining any key values
-    val MAX_CLICKS = 10
 
     // Data fields
-    var clicks = 0
+    var oxygen = 80
 
     // Application logic functions
-    fun updateClickCount() {
-        clicks++
-        if (clicks > MAX_CLICKS) clicks = MAX_CLICKS
+
+    var playerLoc: Room
+
+    init {
+        playerLoc = setupSubmarine()
+    }
+
+    fun movePlayer(direction: String) {
+        val nextRoom = when (direction) {
+            "north" -> playerLoc.north
+            "east" -> playerLoc.east
+            "south" -> playerLoc.south
+            "west" -> playerLoc.west
+            else -> null
+        }
+        if (nextRoom != null) {
+            playerLoc = nextRoom
+        }
     }
 }
-
 
 /**
  * Main UI window (view)
@@ -189,8 +323,6 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2bg.background = Color(100,100,255)
         add(o2bg)
 
-
-
         inventory = JLabel("Inventory")
         inventory.horizontalAlignment = SwingConstants.CENTER
         inventory.bounds = Rectangle(810, 20, 170, 460)
@@ -205,14 +337,15 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      * of the application model
      */
     fun updateView() {
-        if (app.clicks == app.MAX_CLICKS) {
-            locName.text = "Max clicks reached!"
-            searchButton.isEnabled = false
-        }
-        else {
-            locName.text = "Name"
-            searchButton.isEnabled = true
-        }
+
+        locName.text = app.playerLoc.name
+        locDesc.text = app.playerLoc.desc
+
+        val playerLoc = app.playerLoc
+        upButton.isEnabled = playerLoc.north != null
+        leftButton.isEnabled = playerLoc.west != null
+        downButton.isEnabled = playerLoc.south != null
+        rightButton.isEnabled = playerLoc.east != null
     }
 
     /**
@@ -222,8 +355,20 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      */
     override fun actionPerformed(e: ActionEvent?) {
         when (e?.source) {
-            searchButton -> {
-                app.updateClickCount()
+            upButton -> {
+                app.movePlayer("north")
+                updateView()
+            }
+            rightButton -> {
+                app.movePlayer("east")
+                updateView()
+            }
+            downButton -> {
+                app.movePlayer("south")
+                updateView()
+            }
+            leftButton -> {
+                app.movePlayer("west")
                 updateView()
             }
         }
