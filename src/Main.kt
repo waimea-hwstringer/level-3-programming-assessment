@@ -50,7 +50,7 @@ fun setupSubmarine(): Room {
     val electrical = Room("Electrical",null,null,"wires and circuitry")
     val storage = Room("Storage",null,null,"the warehouse")
     val secStorage = Room("Secure Storage",null,null,"for valuables. It's locked.")
-    val moonpool = Room("Moonpool",null,null,"an exit")
+    val moonpool = Room("Moon pool",null,null,"an exit")
     val eastCorridor = Room("East Corridor",null,null,"crew corridor", )
     val eastCorridor2 = Room("Further East Corridor",null,null,"crew corridor", )
     val crew1 = Room("Crew 1",null,null,"crew 1")
@@ -157,9 +157,10 @@ fun setupSubmarine(): Room {
  */
 class App() {
     // Constants defining any key values
+    val MAX_OXYGEN = 80
 
     // Data fields
-    var oxygen = 80
+    var oxygen = 40
 
     // Application logic functions
 
@@ -179,6 +180,7 @@ class App() {
         }
         if (nextRoom != null) {
             playerLoc = nextRoom
+            oxygen --
         }
     }
 }
@@ -306,9 +308,11 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2Symbol.foreground = Color(0,0,0)
         add(o2Symbol)
 
+        var o2 = (460/80) - app.oxygen
+
         o2fg = JLabel()
         o2fg.horizontalAlignment = SwingConstants.CENTER
-        o2fg.bounds = Rectangle(695, 25, 90, 13)
+        o2fg.bounds = Rectangle(690, 20, 100, o2)  // Adjust bar position & height
         o2fg.font = baseFont
         o2fg.background = Color(175,175,175)
         o2fg.isOpaque = true
@@ -340,6 +344,11 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
 
         locName.text = app.playerLoc.name
         locDesc.text = app.playerLoc.desc
+        println(app.oxygen)
+        var o2 = (460/80) - app.oxygen
+        o2fg.bounds = Rectangle(690, 20, 100, o2)  // Adjust bar position & height
+        o2fg.repaint()
+
 
         val playerLoc = app.playerLoc
         upButton.isEnabled = playerLoc.north != null
