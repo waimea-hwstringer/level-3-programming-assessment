@@ -30,8 +30,8 @@ fun main() {
 
 class Room(
     val name: String,
-    var immediateContents: Item?,
-    var secretContents: Item?,
+    var immediateContents: String?,
+    var secretContents: String?,
     val desc: String,
 ) {
     var north: Room? = null
@@ -40,11 +40,10 @@ class Room(
     var west: Room? = null
 }
 
-class Item(val name: String) {
 
-}
+
 fun setupSubmarine(): Room {
-    val sea = Room("Sea",null,null,"the abyss")
+    val sea = Room("Sea",null,"fish","the abyss")
     val entrance = Room("Entrance",null,null,"the entrance")
     val westCorridor = Room("WestCorridor",null,null,"logistics corridor")
     val electrical = Room("Electrical",null,null,"wires and circuitry")
@@ -157,10 +156,11 @@ fun setupSubmarine(): Room {
  */
 class App() {
     // Constants defining any key values
-    val MAX_OXYGEN = 80
+    val MAX_OXYGEN = 60
 
     // Data fields
-    var oxygen = 40
+    var oxygen = MAX_OXYGEN
+    var inventory = mutableListOf<String>()
 
     // Application logic functions
 
@@ -182,6 +182,11 @@ class App() {
             playerLoc = nextRoom
             oxygen --
         }
+    }
+
+    fun search(room: Room) {
+        oxygen--
+        println("You found: ${room.secretContents}")
     }
 }
 
@@ -308,11 +313,9 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2Symbol.foreground = Color(0,0,0)
         add(o2Symbol)
 
-        var o2 = (460/80) - app.oxygen
-
         o2fg = JLabel()
         o2fg.horizontalAlignment = SwingConstants.CENTER
-        o2fg.bounds = Rectangle(690, 20, 100, o2)  // Adjust bar position & height
+        o2fg.bounds = Rectangle(690, 20, 100, 0)  // Adjust bar position & height
         o2fg.font = baseFont
         o2fg.background = Color(175,175,175)
         o2fg.isOpaque = true
@@ -344,9 +347,16 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
 
         locName.text = app.playerLoc.name
         locDesc.text = app.playerLoc.desc
-        println(app.oxygen)
-        var o2 = (460/80) - app.oxygen
-        o2fg.bounds = Rectangle(690, 20, 100, o2)  // Adjust bar position & height
+        println("Oxygen: ${app.oxygen}" )
+
+        val o2Height = (app.MAX_OXYGEN - app.oxygen) * 456 / app.MAX_OXYGEN
+
+        if (app.oxygen == 0) {
+            println("DEAD")
+        }
+
+        println(o2Height)
+        o2fg.bounds = Rectangle(690, 20, 100, o2Height)
         o2fg.repaint()
 
 
@@ -378,6 +388,10 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
             }
             leftButton -> {
                 app.movePlayer("west")
+                updateView()
+            }
+            searchButton -> {
+                app.search(app.playerLoc)
                 updateView()
             }
         }
