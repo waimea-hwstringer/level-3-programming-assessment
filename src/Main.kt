@@ -38,13 +38,14 @@ class Room(
     var east: Room? = null
     var south: Room?= null
     var west: Room? = null
+    var searched = false
 }
 
 
 
 fun setupSubmarine(): Room {
-    val sea = Room("Sea",null,"fish","the abyss")
-    val entrance = Room("Entrance",null,null,"the entrance")
+    val sea = Room("Sea","your submarine","Fish","the abyss")
+    val entrance = Room("Entrance","a wrench",null,"the entrance")
     val westCorridor = Room("WestCorridor",null,null,"logistics corridor")
     val electrical = Room("Electrical",null,null,"wires and circuitry")
     val storage = Room("Storage",null,null,"the warehouse")
@@ -186,6 +187,7 @@ class App() {
 
     fun search(room: Room) {
         oxygen--
+        playerLoc.searched = true
         println("You found: ${room.secretContents}")
     }
 }
@@ -251,21 +253,23 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         locName.horizontalAlignment = SwingConstants.CENTER
         locName.bounds = Rectangle(20, 20, 290, 100)
         locName.font = baseFont
-        locName.border = BorderFactory.createLineBorder(Color.WHITE, 2) // Add a border
+        locName.border = BorderFactory.createLineBorder(Color.WHITE, 2)
         add(locName)
 
         locDesc = JLabel("Desc")
-        locDesc.horizontalAlignment = SwingConstants.CENTER
+        locDesc.horizontalAlignment = SwingConstants.LEFT
+        locDesc.verticalAlignment = SwingConstants.TOP
         locDesc.bounds = Rectangle(20, 140, 290, 340)
-        locDesc.font = baseFont
-        locDesc.border = BorderFactory.createLineBorder(Color.WHITE, 2) // Add a border
+        locDesc.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        locDesc.border = BorderFactory.createLineBorder(Color.WHITE, 2)
         add(locDesc)
 
-        locItems = JLabel("items in room")
+        locItems = JLabel("Items in room")
         locItems.horizontalAlignment = SwingConstants.CENTER
         locItems.bounds = Rectangle(330, 20, 340, 220)
-        locItems.font = baseFont
-        locItems.border = BorderFactory.createLineBorder(Color.WHITE, 2) // Add a border
+        locItems.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        locItems.border = BorderFactory.createLineBorder(Color.WHITE, 2)
+
         add(locItems)
 
         //---Navigation buttons
@@ -346,25 +350,33 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     fun updateView() {
 
         locName.text = app.playerLoc.name
-        locDesc.text = app.playerLoc.desc
+        locDesc.text = "<html> ${app.playerLoc.desc}"
         println("Oxygen: ${app.oxygen}" )
 
-        val o2Height = (app.MAX_OXYGEN - app.oxygen) * 456 / app.MAX_OXYGEN
+        val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
 
         if (app.oxygen == 0) {
             println("DEAD")
         }
 
         println(o2Height)
-        o2fg.bounds = Rectangle(690, 20, 100, o2Height)
+        o2fg.bounds = Rectangle(690, 25, 100, o2Height)
         o2fg.repaint()
-
 
         val playerLoc = app.playerLoc
         upButton.isEnabled = playerLoc.north != null
         leftButton.isEnabled = playerLoc.west != null
         downButton.isEnabled = playerLoc.south != null
         rightButton.isEnabled = playerLoc.east != null
+
+        searchButton.isEnabled = !app.playerLoc.searched
+
+        if (app.playerLoc.immediateContents != null) {
+            locItems.text = "<html>You can see ${app.playerLoc.immediateContents}."
+        }
+        else {
+            locItems.text = "<html>This room looks empty."
+        }
     }
 
     /**
