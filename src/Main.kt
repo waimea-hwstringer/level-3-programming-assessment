@@ -337,7 +337,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory = JLabel("Inventory")
         inventory.horizontalAlignment = SwingConstants.CENTER
         inventory.bounds = Rectangle(810, 20, 170, 460)
-        inventory.font = baseFont
+        inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
         inventory.border = BorderFactory.createLineBorder(Color.WHITE, 2) // Add a border
         add(inventory)
     }
