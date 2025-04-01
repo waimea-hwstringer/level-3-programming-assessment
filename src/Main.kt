@@ -44,8 +44,8 @@ class Room(
 
 
 fun setupSubmarine(): Room {
-    val sea = Room("Sea","your submarine","Fish","the abyss")
-    val entrance = Room("Entrance","a wrench",null,"the entrance")
+    val sea = Room("Sea",null,null,"The Triton submarine looms in front of you. There is a gaping tear in the hull that you can squeeze into ahead. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
+    val entrance = Room("Entrance","wrench","amulet","the entrance")
     val westCorridor = Room("WestCorridor",null,null,"logistics corridor")
     val electrical = Room("Electrical",null,null,"wires and circuitry")
     val storage = Room("Storage",null,null,"the warehouse")
@@ -188,7 +188,18 @@ class App() {
     fun search(room: Room) {
         oxygen--
         playerLoc.searched = true
-        println("You found: ${room.secretContents}")
+        room.immediateContents = room.secretContents
+    }
+
+    fun grab(room: Room) {
+        if (room.name == "Sea") {
+            println("You left!")
+        }
+        else {
+            val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
+            inventory.add(item)
+            room.immediateContents = null
+        }
     }
 }
 
@@ -215,6 +226,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var o2bg: JLabel     //Oxygen bar background
     private lateinit var o2fg: JLabel     //Oxygen bar foreground
     private lateinit var inventory: JLabel
+    private lateinit var iHeader: JLabel
 
     /**
      * Configure the UI and display it
@@ -334,11 +346,21 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2bg.background = Color(100,100,255)
         add(o2bg)
 
-        inventory = JLabel("Inventory")
-        inventory.horizontalAlignment = SwingConstants.CENTER
-        inventory.bounds = Rectangle(810, 20, 170, 460)
+        iHeader = JLabel("Inventory")
+        iHeader.horizontalAlignment = SwingConstants.CENTER
+        iHeader.bounds = Rectangle(810, 20, 170, 62)
+        iHeader.font = baseFont
+        iHeader.background = Color(175,175,175)
+        iHeader.foreground = Color(0,0,0)
+        iHeader.isOpaque = true
+        add(iHeader)
+
+        inventory = JLabel()
+        inventory.horizontalAlignment = SwingConstants.LEFT
+        inventory.verticalAlignment = SwingConstants.TOP
+        inventory.bounds = Rectangle(810, 80, 170, 400)
         inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        inventory.border = BorderFactory.createLineBorder(Color.WHITE, 2) // Add a border
+        inventory.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         add(inventory)
     }
 
@@ -354,14 +376,11 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         println("Oxygen: ${app.oxygen}" )
 
         val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
+        o2fg.bounds = Rectangle(690, 25, 100, o2Height)
 
         if (app.oxygen == 0) {
             println("DEAD")
         }
-
-        println(o2Height)
-        o2fg.bounds = Rectangle(690, 25, 100, o2Height)
-        o2fg.repaint()
 
         val playerLoc = app.playerLoc
         upButton.isEnabled = playerLoc.north != null
@@ -372,11 +391,22 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         searchButton.isEnabled = !app.playerLoc.searched
 
         if (app.playerLoc.immediateContents != null) {
-            locItems.text = "<html>You can see ${app.playerLoc.immediateContents}."
+            locItems.text = "<html>You can see a ${app.playerLoc.immediateContents}."
+            grabButton.isEnabled = true
+            searchButton.isEnabled = false
         }
         else {
             locItems.text = "<html>This room looks empty."
+            grabButton.isEnabled = false
         }
+
+        inventory.text = """
+            <html>
+                <div style='padding: 10px;'>
+                    ${app.inventory.mapIndexed { index, item -> "${index + 1}. $item" }.joinToString("<br>")}
+                </div>
+            </html>
+        """.trimIndent()
     }
 
     /**
@@ -404,6 +434,10 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
             }
             searchButton -> {
                 app.search(app.playerLoc)
+                updateView()
+            }
+            grabButton -> {
+                app.grab(app.playerLoc)
                 updateView()
             }
         }
