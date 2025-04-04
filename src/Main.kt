@@ -44,31 +44,31 @@ class Room(
 
 
 fun setupSubmarine(): Room {
-    val sea = Room("Sea",null,null,"The Triton submarine looms in front of you. There is a gaping tear in the hull that you can squeeze into ahead. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
+    val sea = Room("Sea",null,null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
     val entrance = Room("Entrance","wrench","amulet","the entrance")
-    val westCorridor = Room("WestCorridor",null,null,"logistics corridor")
-    val electrical = Room("Electrical",null,null,"wires and circuitry")
-    val storage = Room("Storage",null,null,"the warehouse")
+    val westCorridor = Room("West Corridor",null,null,"logistics corridor")
+    val electrical = Room("Electrical","damaged component",null,"wires and circuitry")
+    val storage = Room("Storage","oxygen tank","unopened crate","the warehouse")
     val secStorage = Room("Secure Storage",null,null,"for valuables. It's locked.")
     val moonpool = Room("Moon pool",null,null,"an exit")
     val eastCorridor = Room("East Corridor",null,null,"crew corridor", )
     val eastCorridor2 = Room("Further East Corridor",null,null,"crew corridor", )
-    val crew1 = Room("Crew 1",null,null,"crew 1")
-    val crew2 = Room("Crew 2",null,null,"crew 2")
+    val crew1 = Room("Crew 1","family photo",null,"crew 1")
+    val crew2 = Room("Crew 2","band poster",null,"crew 2")
     val crew3 = Room("Crew 3",null,null,"crew 3")
     val northCorridor = Room("North Corridor",null,null,"main corridor")
     val northCorridor2 = Room("Further North Corridor",null,null,"main corridor")
     val upperDeck = Room("Upper Deck",null,null,"The upper deck")
     val bridge = Room("Bridge",null,null,"the main control room")
-    val captain = Room("Captain's quarters",null,null,"the captain's quarters")
-    val messHall = Room("Mess Hall",null,null,"where you eat")
+    val captain = Room("Captain's quarters","key","lockbox","the captain's quarters")
+    val messHall = Room("Mess Hall","crew roster",null,"where you eat")
     val kitchen = Room("Kitchen",null,null,"kitchen")
     val recRoom = Room("Rec Room",null,null,"rec room")
-    val comms = Room("Communications",null,null,"Radio & radar")
+    val comms = Room("Communications","radio",null,"Radio & radar")
     val engine = Room("Engine",null,null,"engine room")
     val lab = Room("Lab",null,null,"chemicals galore")
     val ballast = Room("Ballast",null,null,"ballast")
-    val medical = Room("Medical",null,null,"medical bay")
+    val medical = Room("Medical","first aid kit",null,"medical bay")
 
     sea.north = entrance
 
@@ -162,6 +162,7 @@ class App() {
     // Data fields
     var oxygen = MAX_OXYGEN
     var inventory = mutableListOf<String>()
+    var hasKey = false
 
     // Application logic functions
 
@@ -197,8 +198,16 @@ class App() {
         }
         else {
             val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
-            inventory.add(item)
+            useItem(item)
             room.immediateContents = null
+        }
+    }
+
+    fun useItem(item: String) {
+        when(item){
+            "Oxygen tank" -> oxygen = MAX_OXYGEN
+            "Key" -> {hasKey = true; inventory.add(item)}
+            else -> inventory.add(item)
         }
     }
 }
@@ -214,6 +223,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var locName: JLabel
     private lateinit var locDesc: JLabel
     private lateinit var locItems: JLabel
+    private lateinit var viewHeader: JLabel
 
     private lateinit var searchButton: JButton
     private lateinit var upButton: JButton
@@ -265,7 +275,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         locName.horizontalAlignment = SwingConstants.CENTER
         locName.bounds = Rectangle(20, 20, 290, 100)
         locName.font = baseFont
-        locName.border = BorderFactory.createLineBorder(Color.WHITE, 2)
+        locName.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
         add(locName)
 
         locDesc = JLabel("Desc")
@@ -273,14 +283,22 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         locDesc.verticalAlignment = SwingConstants.TOP
         locDesc.bounds = Rectangle(20, 140, 290, 340)
         locDesc.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        locDesc.border = BorderFactory.createLineBorder(Color.WHITE, 2)
+        locDesc.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
         add(locDesc)
+
+        viewHeader = JLabel("Observations")
+        viewHeader.horizontalAlignment = SwingConstants.CENTER
+        viewHeader.bounds = Rectangle(330, 20, 340, 62)
+        viewHeader.font = baseFont
+        viewHeader.background = Color(78, 80, 82)
+        viewHeader.isOpaque = true
+        add(viewHeader)
 
         locItems = JLabel("Items in room")
         locItems.horizontalAlignment = SwingConstants.CENTER
-        locItems.bounds = Rectangle(330, 20, 340, 220)
+        locItems.bounds = Rectangle(330, 80, 340, 160)
         locItems.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        locItems.border = BorderFactory.createLineBorder(Color.WHITE, 2)
+        locItems.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
 
         add(locItems)
 
@@ -372,7 +390,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     fun updateView() {
 
         locName.text = app.playerLoc.name
-        locDesc.text = "<html> ${app.playerLoc.desc}"
+        locDesc.text = "<html> <div style='padding: 8px;'> ${app.playerLoc.desc} </div> </html>"
         println("Oxygen: ${app.oxygen}" )
 
         val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
@@ -391,7 +409,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         searchButton.isEnabled = !app.playerLoc.searched
 
         if (app.playerLoc.immediateContents != null) {
-            locItems.text = "<html>You can see a ${app.playerLoc.immediateContents}."
+            locItems.text = "<html> You can see a ${app.playerLoc.immediateContents}. </html>."
             grabButton.isEnabled = true
             searchButton.isEnabled = false
         }
@@ -407,6 +425,14 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 </div>
             </html>
         """.trimIndent()
+
+        if(app.playerLoc.name == "Storage" && !app.hasKey) {
+            upButton.text = "\uD83D\uDD12"
+            upButton.isEnabled = false
+        }
+        else {
+            upButton.text = "↑"
+        }
     }
 
     /**
