@@ -237,6 +237,8 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var o2fg: JLabel     //Oxygen bar foreground
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
+    private lateinit var inventoryButton: JButton
+    private lateinit var examplePopUp: PopUpDialog
 
     /**
      * Configure the UI and display it
@@ -380,6 +382,12 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
         inventory.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         add(inventory)
+
+        inventoryButton = JButton("\uD83C\uDF92")
+        inventoryButton.bounds = Rectangle(810,380,100,100)
+        inventoryButton.font = baseFont
+        inventoryButton.addActionListener(this)     // Handle any clicks
+        add(inventoryButton)
     }
 
 
@@ -466,7 +474,85 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 app.grab(app.playerLoc)
                 updateView()
             }
+            inventoryButton -> {
+                PopUpDialog(app, this).apply {
+                    updateView()
+                    isVisible = true
+                }
+            }
         }
     }
 }
 
+
+/**
+ * Displays a modal dialog
+ * The app data model is passed as an argument so
+ * that the model can be accessed, as is the parent
+ * window object, so that this can be accessed too
+ */
+class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog(), ActionListener {
+    private lateinit var popText: JLabel
+    private lateinit var popButton: JButton
+
+    /**
+     * Configure the UI
+     */
+    init {
+        configureWindow()
+        addControls()
+        setLocationRelativeTo(null)     // Centre the window
+    }
+
+    /**
+     * Setup the dialog window
+     */
+    private fun configureWindow() {
+        title = "The Triton - Your Inventory"
+        contentPane.preferredSize = Dimension(400, 500)
+        isResizable = false
+        isModal = true
+        layout = null
+        pack()
+    }
+
+    /**
+     * Populate the window with controls
+     */
+    private fun addControls() {
+        val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
+
+        popText = JLabel("Your Inventory")
+        popText.horizontalAlignment = SwingConstants.CENTER
+        popText.bounds = Rectangle(20, 20, 350, 100)
+        popText.font = baseFont
+        popText.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
+        add(popText)
+
+        popButton = JButton("X")
+        popButton.horizontalAlignment = SwingConstants.CENTER
+        popButton.bounds = Rectangle(20, 140, 200, 100)
+        popButton.font = baseFont
+        popButton.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
+        add(popButton)
+    }
+
+    /**
+     * Update the view with data from the data model
+     */
+    fun updateView() {
+
+    }
+
+    /**
+     * Handle UI actions such as button clicks
+     */
+    override fun actionPerformed(e: ActionEvent?) {
+        when (e?.source) {
+            popButton -> {
+                println("XXX")
+            }
+        }
+    }
+
+}
