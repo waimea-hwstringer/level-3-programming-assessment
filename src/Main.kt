@@ -44,31 +44,31 @@ class Room(
 
 
 fun setupSubmarine(): Room {
-    val sea = Room("Sea",null,null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
-    val entrance = Room("Entrance","wrench","amulet","the entrance")
+    val sea = Room("Sea","way out",null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
+    val entrance = Room("Entrance",null,"shoe","the entrance")
     val westCorridor = Room("West Corridor",null,null,"logistics corridor")
     val electrical = Room("Electrical","damaged component",null,"wires and circuitry")
     val storage = Room("Storage","oxygen tank","unopened crate","the warehouse")
     val secStorage = Room("Secure Storage",null,null,"for valuables. It's locked.")
-    val moonpool = Room("Moon pool",null,null,"an exit")
+    val moonpool = Room("Moon pool","way out",null,"an exit")
     val eastCorridor = Room("East Corridor",null,null,"crew corridor", )
-    val eastCorridor2 = Room("Further East Corridor",null,null,"crew corridor", )
-    val crew1 = Room("Crew 1","family photo",null,"crew 1")
-    val crew2 = Room("Crew 2","band poster",null,"crew 2")
-    val crew3 = Room("Crew 3",null,null,"crew 3")
+    val eastCorridor2 = Room("Far E. Corridor",null,null,"crew corridor", )
+    val crew1 = Room("Cabin Alpha","family photo",null,"Barracks for some of the crew. Sleeps six.")
+    val crew2 = Room("Cabin Bravo","band poster","CD","crew 2")
+    val crew3 = Room("Cabin Charlie",null,"wedding ring","crew 3")
     val northCorridor = Room("North Corridor",null,null,"main corridor")
-    val northCorridor2 = Room("Further North Corridor",null,null,"main corridor")
+    val northCorridor2 = Room("Far N. Corridor",null,null,"main corridor")
     val upperDeck = Room("Upper Deck",null,null,"The upper deck")
     val bridge = Room("Bridge",null,null,"the main control room")
-    val captain = Room("Captain's quarters","key","lockbox","the captain's quarters")
+    val captain = Room("Captain's quarters","key","lock box","the captain's quarters")
     val messHall = Room("Mess Hall","crew roster",null,"where you eat")
-    val kitchen = Room("Kitchen",null,null,"kitchen")
-    val recRoom = Room("Rec Room",null,null,"rec room")
-    val comms = Room("Communications","radio",null,"Radio & radar")
-    val engine = Room("Engine",null,null,"engine room")
-    val lab = Room("Lab",null,null,"chemicals galore")
+    val kitchen = Room("Kitchen","silverware",null,"kitchen")
+    val recRoom = Room("Rec-Room",null,null,"rec room")
+    val comms = Room("Communications","radio","hard drive","Radio & radar")
+    val engine = Room("Engine","wrench",null,"engine room")
+    val lab = Room("Lab","vile of chemicals",null,"chemicals galore")
     val ballast = Room("Ballast",null,null,"ballast")
-    val medical = Room("Medical","first aid kit",null,"medical bay")
+    val medical = Room("Medical","first aid kit","strange syringe","medical bay")
 
     sea.north = entrance
 
@@ -193,20 +193,16 @@ class App() {
     }
 
     fun grab(room: Room) {
-        if (room.name == "Sea") {
-            println("You left!")
-        }
-        else {
-            val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
-            useItem(item)
-            room.immediateContents = null
-        }
+        val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
+        useItem(item)
+        room.immediateContents = null
     }
 
     fun useItem(item: String) {
         when(item){
             "Oxygen tank" -> oxygen = MAX_OXYGEN
             "Key" -> {hasKey = true; inventory.add(item)}
+            "Way out" -> println("You left!")
             else -> inventory.add(item)
         }
     }
@@ -238,7 +234,6 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
     private lateinit var inventoryButton: JButton
-    private lateinit var examplePopUp: PopUpDialog
 
     /**
      * Configure the UI and display it
@@ -378,13 +373,13 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory = JLabel()
         inventory.horizontalAlignment = SwingConstants.LEFT
         inventory.verticalAlignment = SwingConstants.TOP
-        inventory.bounds = Rectangle(810, 80, 170, 400)
+        inventory.bounds = Rectangle(810, 80, 170, 280)
         inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
         inventory.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         add(inventory)
 
         inventoryButton = JButton("\uD83C\uDF92")
-        inventoryButton.bounds = Rectangle(810,380,100,100)
+        inventoryButton.bounds = Rectangle(810,380,170,100)
         inventoryButton.font = baseFont
         inventoryButton.addActionListener(this)     // Handle any clicks
         add(inventoryButton)
@@ -491,9 +486,9 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
  * that the model can be accessed, as is the parent
  * window object, so that this can be accessed too
  */
-class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog(), ActionListener {
+class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog() {
     private lateinit var popText: JLabel
-    private lateinit var popButton: JButton
+    private lateinit var popList: JLabel
 
     /**
      * Configure the UI
@@ -505,7 +500,7 @@ class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog(), ActionLi
     }
 
     /**
-     * Setup the dialog window
+     * Set up the dialog window
      */
     private fun configureWindow() {
         title = "The Triton - Your Inventory"
@@ -522,37 +517,26 @@ class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog(), ActionLi
     private fun addControls() {
         val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
 
-        popText = JLabel("Your Inventory")
+        popText = JLabel("Your Full Inventory")
         popText.horizontalAlignment = SwingConstants.CENTER
         popText.bounds = Rectangle(20, 20, 350, 100)
         popText.font = baseFont
         popText.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
         add(popText)
 
-        popButton = JButton("X")
-        popButton.horizontalAlignment = SwingConstants.CENTER
-        popButton.bounds = Rectangle(20, 140, 200, 100)
-        popButton.font = baseFont
-        popButton.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
-        add(popButton)
+        popList = JLabel("You have no items yet.")
+        popList.horizontalAlignment = SwingConstants.LEFT
+        popList.verticalAlignment = SwingConstants.TOP
+        popList.bounds = Rectangle(20, 140, 350, 340)
+        popList.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        popList.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
+        add(popList)
     }
 
     /**
      * Update the view with data from the data model
      */
     fun updateView() {
-
+        popList.text = "<html> <div style='padding: 10px;'> ${app.inventory.joinToString()} </div> </html>"
     }
-
-    /**
-     * Handle UI actions such as button clicks
-     */
-    override fun actionPerformed(e: ActionEvent?) {
-        when (e?.source) {
-            popButton -> {
-                println("XXX")
-            }
-        }
-    }
-
 }
