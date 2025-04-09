@@ -35,7 +35,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hwstringer/OneDrive - Waimea College/Documents/300DTD/Kotlin/kotlin-gui-popup-with-data-demo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hwstringer/OneDrive - Waimea College/Documents/300DTD/Kotlin/kotlin-gui-popup-demo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -86,7 +86,9 @@
       <workItem from="1743731241808" duration="41000" />
       <workItem from="1743731368970" duration="46000" />
       <workItem from="1743731429038" duration="1207000" />
-      <workItem from="1744059667074" duration="3290000" />
+      <workItem from="1744059667074" duration="3419000" />
+      <workItem from="1744154640004" duration="306000" />
+      <workItem from="1744154972495" duration="3284000" />
     </task>
     <servers />
   </component>

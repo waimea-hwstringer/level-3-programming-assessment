@@ -126,6 +126,7 @@ fun setupSubmarine(): Room {
     northCorridor2.north = upperDeck
     northCorridor2.south = northCorridor
     northCorridor2.east = recRoom
+    northCorridor2.west = lab
 
     upperDeck.north = bridge
     upperDeck.south = northCorridor2
@@ -233,7 +234,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var o2fg: JLabel     //Oxygen bar foreground
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
-    private lateinit var inventoryButton: JButton
+    private lateinit var tutorialButton: JButton
 
     /**
      * Configure the UI and display it
@@ -361,7 +362,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2bg.background = Color(100,100,255)
         add(o2bg)
 
-        iHeader = JLabel("Inventory")
+        iHeader = JLabel("\uD83C\uDF92")
         iHeader.horizontalAlignment = SwingConstants.CENTER
         iHeader.bounds = Rectangle(810, 20, 170, 62)
         iHeader.font = baseFont
@@ -373,16 +374,20 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory = JLabel()
         inventory.horizontalAlignment = SwingConstants.LEFT
         inventory.verticalAlignment = SwingConstants.TOP
-        inventory.bounds = Rectangle(810, 80, 170, 280)
+        inventory.bounds = Rectangle(0, 0, 170, 320)
         inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        inventory.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
-        add(inventory)
 
-        inventoryButton = JButton("\uD83C\uDF92")
-        inventoryButton.bounds = Rectangle(810,380,170,100)
-        inventoryButton.font = baseFont
-        inventoryButton.addActionListener(this)     // Handle any clicks
-        add(inventoryButton)
+        val inventoryScroll = JScrollPane(inventory)
+        inventoryScroll.bounds = Rectangle(810, 80, 170, 320)
+        inventoryScroll.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
+        inventoryScroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+        add(inventoryScroll)
+
+        tutorialButton = JButton("ⓘ")
+        tutorialButton.bounds = Rectangle(810,420,170,60)
+        tutorialButton.font = baseFont
+        tutorialButton.addActionListener(this)     // Handle any clicks
+        add(tutorialButton)
     }
 
 
@@ -426,7 +431,6 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 <div style='padding: 10px;'>
                     ${app.inventory.mapIndexed { index, item -> "${index + 1}. $item" }.joinToString("<br>")}
                 </div>
-            </html>
         """.trimIndent()
 
         if(app.playerLoc.name == "Storage" && !app.hasKey) {
@@ -469,8 +473,8 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 app.grab(app.playerLoc)
                 updateView()
             }
-            inventoryButton -> {
-                PopUpDialog(app, this).apply {
+            tutorialButton -> {
+                TutorialPopup().apply {
                     updateView()
                     isVisible = true
                 }
@@ -480,16 +484,8 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
 }
 
 
-/**
- * Displays a modal dialog
- * The app data model is passed as an argument so
- * that the model can be accessed, as is the parent
- * window object, so that this can be accessed too
- */
-class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog() {
-    private lateinit var popText: JLabel
-    private lateinit var popList: JLabel
 
+class TutorialPopup(): JDialog() {
     /**
      * Configure the UI
      */
@@ -503,8 +499,8 @@ class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog() {
      * Set up the dialog window
      */
     private fun configureWindow() {
-        title = "The Triton - Your Inventory"
-        contentPane.preferredSize = Dimension(400, 500)
+        title = "The Triton - Tutorial"
+        contentPane.preferredSize = Dimension(500, 500)
         isResizable = false
         isModal = true
         layout = null
@@ -515,28 +511,13 @@ class PopUpDialog(val app: App, val mainWindow: MainWindow): JDialog() {
      * Populate the window with controls
      */
     private fun addControls() {
-        val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
+        val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 16)
 
-        popText = JLabel("Your Full Inventory")
-        popText.horizontalAlignment = SwingConstants.CENTER
-        popText.bounds = Rectangle(20, 20, 350, 100)
-        popText.font = baseFont
-        popText.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
-        add(popText)
-
-        popList = JLabel("You have no items yet.")
-        popList.horizontalAlignment = SwingConstants.LEFT
-        popList.verticalAlignment = SwingConstants.TOP
-        popList.bounds = Rectangle(20, 140, 350, 340)
-        popList.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        popList.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
-        add(popList)
-    }
-
-    /**
-     * Update the view with data from the data model
-     */
-    fun updateView() {
-        popList.text = "<html> <div style='padding: 10px;'> ${app.inventory.joinToString()} </div> </html>"
+        // Adding <html> to the label text allows it to wrap
+        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your dive bag \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
+        message.bounds = Rectangle(25, 25, 450, 500)
+        message.verticalAlignment = SwingConstants.TOP
+        message.font = baseFont
+        add(message)
     }
 }
