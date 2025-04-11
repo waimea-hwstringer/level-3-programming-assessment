@@ -44,31 +44,31 @@ class Room(
 
 
 fun setupSubmarine(): Room {
-    val sea = Room("Sea","way out",null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
-    val entrance = Room("Entrance",null,"shoe","the entrance")
-    val westCorridor = Room("West Corridor",null,null,"logistics corridor")
-    val electrical = Room("Electrical","damaged component",null,"wires and circuitry")
-    val storage = Room("Storage","oxygen tank","unopened crate","the warehouse")
-    val secStorage = Room("Secure Storage",null,null,"for valuables. It's locked.")
-    val moonpool = Room("Moon pool","way out",null,"an exit")
-    val eastCorridor = Room("East Corridor",null,null,"crew corridor", )
-    val eastCorridor2 = Room("Far E. Corridor",null,null,"crew corridor", )
-    val crew1 = Room("Cabin Alpha","family photo",null,"Barracks for some of the crew. Sleeps six.")
-    val crew2 = Room("Cabin Bravo","band poster","CD","crew 2")
-    val crew3 = Room("Cabin Charlie",null,"wedding ring","crew 3")
+    val sea = Room("The Sea","way out",null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
+    val entrance = Room("Main Entrance",null,"shoe","There appear to be three hallways ahead. This probably isn't the actual entrance to the sub, but the tear in the hull makes it a convenient entrance for you. You can go back through the hole to your south if you'd like to return to the surface.")
+    val westCorridor = Room("West Corridor",null,null,"This corridor continues to the west and east. There is a door to the north that has a ⚡ symbol on it.")
+    val electrical = Room("Electrical","component","computer","Wires and circuit boards are everywhere. Many wires are tangled together in giant knots and balls. Most of the equipment seems to be in utter disarray.")
+    val storage = Room("General Storage","oxygen tank","unopened crate","There are many full crates in this room, but most seem to heavy and big to carry. There's a corridor to the east, and two rooms to the north and west. Strangely, the northern room seems to be locked. Maybe there is a key somewhere?")
+    val secStorage = Room("Secure Storage","locked chest","small box","You use the key that you found in the Captain's Quarters to unlock the Secure Storage. These items are most likely the most valuable on the vessel.")
+    val moonpool = Room("Moon pool","way out",null,"There is a hole in the floor that used to be used to deploy small vessels & ROVs. You could probably jump through the pool and swim out to your submersible if you're lost.")
+    val eastCorridor = Room("East Corridor",null,null,"There is a door to the north that reads 'CABIN ALPHA'. It most likely housed some of the crew. The corridor continues to the east.", )
+    val eastCorridor2 = Room("Far E. Corridor",null,null,"The door to the north reads 'CABIN BRAVO', to the east is 'CABIN CHARLIE'. A corridor continues to the west.", )
+    val crew1 = Room("Cabin Alpha","family photo",null,"Barracks for some of the crew. Sleeps six. The room is decorated with photos of family members on the wall, but other than that it contains nothing of note.")
+    val crew2 = Room("Cabin Bravo","band poster","CD","Barracks for some of the crew. Sleeps six. The people in this room seemed to be pretty keen on music. The walls are dotted with band posters.")
+    val crew3 = Room("Cabin Charlie",null,"wedding ring","A smaller barracks for some of the crew. Sleeps four. This room is a bit cramped, it must have sucked to sleep here.")
     val northCorridor = Room("North Corridor",null,null,"main corridor")
     val northCorridor2 = Room("Far N. Corridor",null,null,"main corridor")
     val upperDeck = Room("Upper Deck",null,null,"The upper deck")
-    val bridge = Room("Bridge",null,null,"the main control room")
+    val bridge = Room("The Bridge",null,null,"the main control room")
     val captain = Room("Captain's quarters","key","lock box","the captain's quarters")
     val messHall = Room("Mess Hall","crew roster",null,"where you eat")
     val kitchen = Room("Kitchen","silverware",null,"kitchen")
     val recRoom = Room("Rec-Room",null,null,"rec room")
     val comms = Room("Communications","radio","hard drive","Radio & radar")
-    val engine = Room("Engine","wrench",null,"engine room")
-    val lab = Room("Lab","vile of chemicals",null,"chemicals galore")
-    val ballast = Room("Ballast",null,null,"ballast")
-    val medical = Room("Medical","first aid kit","strange syringe","medical bay")
+    val engine = Room("Engine Room","wrench",null,"engine room")
+    val lab = Room("Laboratory","vile of chemicals",null,"chemicals galore")
+    val ballast = Room("The Ballast",null,null,"ballast")
+    val medical = Room("Medical Bay","first aid kit","strange syringe","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
     sea.north = entrance
 
@@ -158,7 +158,7 @@ fun setupSubmarine(): Room {
  */
 class App() {
     // Constants defining any key values
-    val MAX_OXYGEN = 60
+    val MAX_OXYGEN = 40
 
     // Data fields
     var oxygen = MAX_OXYGEN
@@ -254,7 +254,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      */
     private fun configureWindow() {
         title = "The Triton - Treasure Seeker"
-        contentPane.preferredSize = Dimension(1000, 500)
+        contentPane.preferredSize = Dimension(1200, 500)
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
         isResizable = false
         layout = null
@@ -266,106 +266,107 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      * Populate the UI with UI controls
      */
     private fun addControls() {
-        val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
+        val headerFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
+        val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 24)
 
         //---Text & Info
-        locName = JLabel("Name")
+        locName = JLabel("Name of location")
         locName.horizontalAlignment = SwingConstants.CENTER
-        locName.bounds = Rectangle(20, 20, 290, 100)
-        locName.font = baseFont
+        locName.bounds = Rectangle(20, 20, 390, 100)
+        locName.font = headerFont
         locName.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
         add(locName)
 
-        locDesc = JLabel("Desc")
+        locDesc = JLabel("Description of location")
         locDesc.horizontalAlignment = SwingConstants.LEFT
         locDesc.verticalAlignment = SwingConstants.TOP
-        locDesc.bounds = Rectangle(20, 140, 290, 340)
-        locDesc.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        locDesc.bounds = Rectangle(20, 140, 390, 340)
+        locDesc.font = baseFont
         locDesc.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
         add(locDesc)
 
         viewHeader = JLabel("Observations")
         viewHeader.horizontalAlignment = SwingConstants.CENTER
-        viewHeader.bounds = Rectangle(330, 20, 340, 62)
-        viewHeader.font = baseFont
+        viewHeader.bounds = Rectangle(430, 20, 340, 62)
+        viewHeader.font = headerFont
         viewHeader.background = Color(78, 80, 82)
         viewHeader.isOpaque = true
         add(viewHeader)
 
         locItems = JLabel("Items in room")
         locItems.horizontalAlignment = SwingConstants.CENTER
-        locItems.bounds = Rectangle(330, 80, 340, 160)
-        locItems.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        locItems.bounds = Rectangle(430, 80, 340, 160)
+        locItems.font = baseFont
         locItems.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
 
         add(locItems)
 
         //---Navigation buttons
         searchButton = JButton("\uD83D\uDC41")
-        searchButton.bounds = Rectangle(330,260,100,100)
-        searchButton.font = baseFont
+        searchButton.bounds = Rectangle(430,260,100,100)
+        searchButton.font = headerFont
         searchButton.addActionListener(this)     // Handle any clicks
         add(searchButton)
 
         upButton = JButton("↑")
-        upButton.bounds = Rectangle(450,260,100,100)
-        upButton.font = baseFont
+        upButton.bounds = Rectangle(550,260,100,100)
+        upButton.font = headerFont
         upButton.addActionListener(this)     // Handle any clicks
         add(upButton)
 
         grabButton = JButton("\uD83D\uDD91")
-        grabButton.bounds = Rectangle(570,260,100,100)
-        grabButton.font = baseFont
+        grabButton.bounds = Rectangle(670,260,100,100)
+        grabButton.font = headerFont
         grabButton.addActionListener(this)     // Handle any clicks
         add(grabButton)
 
         leftButton = JButton("←")
-        leftButton.bounds = Rectangle(330,380,100,100)
-        leftButton.font = baseFont
+        leftButton.bounds = Rectangle(430,380,100,100)
+        leftButton.font = headerFont
         leftButton.addActionListener(this)     // Handle any clicks
         add(leftButton)
 
         downButton = JButton("↓")
-        downButton.bounds = Rectangle(450,380,100,100)
-        downButton.font = baseFont
+        downButton.bounds = Rectangle(550,380,100,100)
+        downButton.font = headerFont
         downButton.addActionListener(this)     // Handle any clicks
         add(downButton)
 
         rightButton = JButton("→")
-        rightButton.bounds = Rectangle(570,380,100,100)
-        rightButton.font = baseFont
+        rightButton.bounds = Rectangle(670,380,100,100)
+        rightButton.font = headerFont
         rightButton.addActionListener(this)     // Handle any clicks
         add(rightButton)
 
         //---Oxygen & inventory
         o2Symbol = JLabel("O₂")
         o2Symbol.horizontalAlignment = SwingConstants.CENTER
-        o2Symbol.bounds = Rectangle(690, 20, 100, 100)
-        o2Symbol.font = baseFont
+        o2Symbol.bounds = Rectangle(790, 20, 100, 100)
+        o2Symbol.font = headerFont
         o2Symbol.foreground = Color(0,0,0)
         add(o2Symbol)
 
         o2fg = JLabel()
         o2fg.horizontalAlignment = SwingConstants.CENTER
-        o2fg.bounds = Rectangle(690, 20, 100, 0)  // Adjust bar position & height
-        o2fg.font = baseFont
+        o2fg.bounds = Rectangle(790, 20, 100, 0)  // Adjust bar position & height
+        o2fg.font = headerFont
         o2fg.background = Color(175,175,175)
         o2fg.isOpaque = true
         add(o2fg)
 
         o2bg = JLabel()
         o2bg.horizontalAlignment = SwingConstants.CENTER
-        o2bg.bounds = Rectangle(690, 20, 100, 460)
-        o2bg.font = baseFont
+        o2bg.bounds = Rectangle(790, 20, 100, 460)
+        o2bg.font = headerFont
         o2bg.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         o2bg.isOpaque = true
         o2bg.background = Color(100,100,255)
         add(o2bg)
 
-        iHeader = JLabel("\uD83C\uDF92")
+        iHeader = JLabel("\uD83C\uDF92 Inventory")
         iHeader.horizontalAlignment = SwingConstants.CENTER
-        iHeader.bounds = Rectangle(810, 20, 170, 62)
-        iHeader.font = baseFont
+        iHeader.bounds = Rectangle(910, 20, 270, 62)
+        iHeader.font = headerFont
         iHeader.background = Color(175,175,175)
         iHeader.foreground = Color(0,0,0)
         iHeader.isOpaque = true
@@ -374,17 +375,17 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory = JLabel()
         inventory.horizontalAlignment = SwingConstants.LEFT
         inventory.verticalAlignment = SwingConstants.TOP
-        inventory.bounds = Rectangle(0, 0, 170, 320)
-        inventory.font = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        inventory.bounds = Rectangle(0, 0, 270, 320)
+        inventory.font = baseFont
 
         val inventoryScroll = JScrollPane(inventory)
-        inventoryScroll.bounds = Rectangle(810, 80, 170, 320)
+        inventoryScroll.bounds = Rectangle(910, 80, 270, 320)
         inventoryScroll.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         inventoryScroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         add(inventoryScroll)
 
-        tutorialButton = JButton("ⓘ")
-        tutorialButton.bounds = Rectangle(810,420,170,60)
+        tutorialButton = JButton("ⓘ Information")
+        tutorialButton.bounds = Rectangle(910,420,270,60)
         tutorialButton.font = baseFont
         tutorialButton.addActionListener(this)     // Handle any clicks
         add(tutorialButton)
@@ -402,7 +403,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         println("Oxygen: ${app.oxygen}" )
 
         val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
-        o2fg.bounds = Rectangle(690, 25, 100, o2Height)
+        o2fg.bounds = Rectangle(790, 25, 100, o2Height)
 
         if (app.oxygen == 0) {
             println("DEAD")
@@ -433,7 +434,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 </div>
         """.trimIndent()
 
-        if(app.playerLoc.name == "Storage" && !app.hasKey) {
+        if(app.playerLoc.name == "General Storage" && !app.hasKey) {
             upButton.text = "\uD83D\uDD12"
             upButton.isEnabled = false
         }
@@ -514,7 +515,7 @@ class TutorialPopup(): JDialog() {
         val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 16)
 
         // Adding <html> to the label text allows it to wrap
-        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your dive bag \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
+        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. If you can see 'a way out' using the grab button will exit the submarine. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your dive bag \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
         message.bounds = Rectangle(25, 25, 450, 500)
         message.verticalAlignment = SwingConstants.TOP
         message.font = baseFont
