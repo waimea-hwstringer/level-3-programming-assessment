@@ -1,4 +1,4 @@
-# PROJECT NAME HERE
+# THE TRITON - TREASURE SEEKER
 
 by Harry Stringer
 
