@@ -26,6 +26,7 @@ fun main() {
     FlatDarkLaf.setup()     // Flat, dark look-and-feel
     val app = App()         // Create the app model
     MainWindow(app)         // Create and show the UI, using the app model
+    TutorialPopup().isVisible = true
 }
 
 class Room(
@@ -65,9 +66,9 @@ fun setupSubmarine(): Room {
     val kitchen = Room("Kitchen","silverware",null,"This is where all the food for the crew was cooked. You can't tell the difference between the bench tops and the ovens because of the sheer amount of rust and detritus.")
     val recRoom = Room("Rec-Room","dartboard",null,"This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
     val comms = Room("Communications","keyboard","hard drive","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
-    val engine = Room("Engine Room","wrench","","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
+    val engine = Room("Engine Room","wrench","toolbox","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
     val lab = Room("Laboratory","vile of chemicals","microscope","This appears to be some kind of lab. There are glass viles and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
-    val ballast = Room("The Ballast",null,null,"There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
+    val ballast = Room("The Ballast","damaged pipe",null,"There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
     val medical = Room("Medical Bay","first aid kit","strange syringe","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
     sea.north = entrance
@@ -515,7 +516,7 @@ class TutorialPopup(): JDialog() {
         val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 16)
 
         // Adding <html> to the label text allows it to wrap
-        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. If you can see 'a way out' using the grab button will exit the submarine. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your dive bag \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
+        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. If you can see 'a way out' using the grab button will exit the submarine. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your inventory \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
         message.bounds = Rectangle(25, 25, 450, 500)
         message.verticalAlignment = SwingConstants.TOP
         message.font = baseFont
