@@ -17,6 +17,7 @@ import com.formdev.flatlaf.FlatDarkLaf
 import java.awt.*
 import java.awt.event.*
 import javax.swing.*
+import kotlin.system.exitProcess
 
 
 /**
@@ -47,28 +48,28 @@ class Room(
 fun setupSubmarine(): Room {
     val sea = Room("The Sea","way out",null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
     val entrance = Room("Main Entrance",null,"shoe","There appear to be three hallways ahead. This probably isn't the actual entrance to the sub, but the tear in the hull makes it a convenient entrance for you. You can go back through the hole to your south if you'd like to return to the surface.")
-    val westCorridor = Room("West Corridor",null,null,"This corridor continues to the west and east. There is a door to the north that has a ⚡ symbol on it.")
+    val westCorridor = Room("West Corridor","screw",null,"This corridor continues to the west and east. There is a door to the north that has a ⚡ symbol on it.")
     val electrical = Room("Electrical","component","computer","Wires and circuit boards are everywhere. Many wires are tangled together in giant knots and balls. Most of the equipment seems to be in utter disarray.")
     val storage = Room("General Storage","oxygen tank","unopened crate","There are many full crates in this room, but most seem to heavy and big to carry. There's a corridor to the east, and two rooms to the north and west. Strangely, the northern room seems to be locked. Maybe there is a key somewhere?")
     val secStorage = Room("Secure Storage","locked chest","small box","You use the key that you found in the Captain's Quarters to unlock the Secure Storage. These items are most likely the most valuable on the vessel.")
     val moonpool = Room("Moon pool","way out",null,"There is a hole in the floor that used to be used to deploy small vessels & ROVs. You could probably jump through the pool and swim out to your submersible if you're lost.")
-    val eastCorridor = Room("East Corridor",null,null,"There is a door to the north that reads 'CABIN ALPHA'. It most likely housed some of the crew. The corridor continues to the east.", )
-    val eastCorridor2 = Room("Far E. Corridor",null,null,"The door to the north reads 'CABIN BRAVO', to the east is 'CABIN CHARLIE'. A corridor continues to the west.", )
+    val eastCorridor = Room("East Corridor",null,null,"There is a door to the north that reads 'CABIN ALPHA'. It most likely housed some of the crew. The corridor continues to the east.")
+    val eastCorridor2 = Room("Far E. Corridor","wristwatch",null,"The door to the north reads 'CABIN BRAVO', to the east is 'CABIN CHARLIE'. A corridor continues to the west.")
     val crew1 = Room("Cabin Alpha","family photo","wedding ring","Barracks for some of the crew. Sleeps six. The room is decorated with photos of family members on the wall, but other than that it contains nothing of note.")
     val crew2 = Room("Cabin Bravo","band poster","CD","Barracks for some of the crew. Sleeps six. The people in this room seemed to be pretty keen on music. The walls are dotted with band posters.")
     val crew3 = Room("Cabin Charlie",null,"toothpaste","A smaller barracks for some of the crew. Sleeps four. This room is a bit cramped, it must have sucked to sleep here.")
     val northCorridor = Room("North Corridor",null,null,"This corridor appears rather long. It continues ahead. To the west there is a door marked with a ✚ symbol. There is an unmarked door to the east.")
-    val northCorridor2 = Room("Far N. Corridor",null,null,"The corridor continues up some stairs to the north. West there is a door with: ⚠ WARNING ⚠ GLOVES & FACE COVERS MUST BE WORN. To the east is an unmarked door.")
+    val northCorridor2 = Room("Far N. Corridor","extinguisher",null,"The corridor continues up some stairs to the north. West there is a door with: ⚠ WARNING ⚠ GLOVES & FACE COVERS MUST BE WORN. To the east is an unmarked door.")
     val upperDeck = Room("Upper Deck",null,null,"This corridor seems to be more secure than the others. It continues through a heavy door to the north, and stairs to the south. There are two rooms to the east & west.")
     val bridge = Room("The Bridge",null,null,"This is where the main controls for the sub are. You can see the dark abyss that is the sea through a small porthole to the north. The captain's quarters are probably near by.")
     val captain = Room("Captain's quarters","key","lock box","This is where the captain stayed. It is very cushy and comfortable compared to everywhere else in the vessel. This room is definitely worth searching further.")
     val messHall = Room("Mess Hall","crew roster",null,"There are two big tables in the centre of this room. This is where the crew would come to eat. There is a pot on the flower that probably used to contain a plant.")
     val kitchen = Room("Kitchen","silverware",null,"This is where all the food for the crew was cooked. You can't tell the difference between the bench tops and the ovens because of the sheer amount of rust and detritus.")
-    val recRoom = Room("Rec-Room","dartboard",null,"This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
+    val recRoom = Room("Rec-Room","dartboard","biscuit tin","This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
     val comms = Room("Communications","keyboard","hard drive","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
     val engine = Room("Engine Room","wrench","toolbox","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
     val lab = Room("Laboratory","vile of chemicals","microscope","This appears to be some kind of lab. There are glass viles and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
-    val ballast = Room("The Ballast","damaged pipe",null,"There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
+    val ballast = Room("The Ballast","damaged pipe","bent wrench","There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
     val medical = Room("Medical Bay","first aid kit","strange syringe","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
     sea.north = entrance
@@ -197,16 +198,25 @@ class App() {
     fun grab(room: Room) {
         val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
         useItem(item)
-        room.immediateContents = null
+        if(room.immediateContents != "way out") {
+            room.immediateContents = null
+        }
+
     }
 
     fun useItem(item: String) {
         when(item){
             "Oxygen tank" -> oxygen = MAX_OXYGEN
             "Key" -> {hasKey = true; inventory.add(item)}
-            "Way out" -> println("You left!")
+            "Way out" -> LeavePopup(this).isVisible = true
             else -> inventory.add(item)
         }
+    }
+
+    fun resetGame() {
+        playerLoc = setupSubmarine()
+        oxygen = MAX_OXYGEN
+        inventory.clear()
     }
 }
 
@@ -401,7 +411,6 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
 
         locName.text = app.playerLoc.name
         locDesc.text = "<html> <div style='padding: 8px;'> ${app.playerLoc.desc} </div> </html>"
-        println("Oxygen: ${app.oxygen}" )
 
         val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
         o2fg.bounds = Rectangle(790, 25, 100, o2Height)
@@ -521,5 +530,88 @@ class TutorialPopup(): JDialog() {
         message.verticalAlignment = SwingConstants.TOP
         message.font = baseFont
         add(message)
+    }
+}
+
+
+class LeavePopup(val app: App): JDialog(), ActionListener {
+
+    private lateinit var quitButton: JButton
+    private lateinit var restartButton: JButton
+
+    /**
+     * Configure the UI
+     */
+    init {
+        configureWindow()
+        addControls()
+        setLocationRelativeTo(null)     // Centre the window
+    }
+
+    /**
+     * Set up the dialog window
+     */
+    private fun configureWindow() {
+        title = "The Triton - Back in your Submersible"
+        contentPane.preferredSize = Dimension(500, 350)
+        isResizable = false
+        isModal = true
+        layout = null
+        pack()
+    }
+
+    /**
+     * Populate the window with controls
+     */
+    private fun addControls() {
+
+        val headerFont = Font(Font.SANS_SERIF, Font.PLAIN, 24)
+        val header = JLabel("<html>Hello there diver! </html>")
+        header.bounds = Rectangle(35, 25, 440, 500)
+        header.verticalAlignment = SwingConstants.TOP
+        header.font = headerFont
+        add(header)
+
+        quitButton = JButton("Quit")
+        quitButton.bounds = Rectangle(25, 200, 450, 50)
+        quitButton.font = headerFont
+        quitButton.addActionListener(this)     // Handle any clicks
+        add(quitButton)
+
+        restartButton = JButton("Replay")
+        restartButton.bounds = Rectangle(25, 275, 450, 50)
+        restartButton.font = headerFont
+        restartButton.addActionListener(this)     // Handle any clicks
+        add(restartButton)
+
+        val text: String
+        val no = app.inventory.size //number of total items in inventory
+        val noImp = 4 //number of
+
+        if(app.inventory.isEmpty() && app.oxygen > 15){
+            text = "Why are you back so soon? You haven't found any items yet. Only grab the 'way out' when you're ready to leave. <br><br> Now get back in there!"
+        }
+        else if(app.inventory.isEmpty() && app.oxygen <= 15) {
+            text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back."
+        }
+        else {
+            text = "Glad to see you back diver, I was getting worried. These items should aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface. <br><br> $no/31 items discovered • "
+        }
+
+        val message = JLabel("<html>$text</html>")
+        message.bounds = Rectangle(35, 70, 440, 500)
+        message.verticalAlignment = SwingConstants.TOP
+        message.font = Font(Font.SANS_SERIF, Font.PLAIN, 16)
+        add(message)
+    }
+
+    /**
+     * Handle UI actions such as button clicks
+     */
+    override fun actionPerformed(e: ActionEvent?) {
+        when (e?.source) {
+            quitButton -> exitProcess(0) //quits program
+            restartButton -> {app.resetGame(); dispose()} //resets game & closes popup
+        }
     }
 }
