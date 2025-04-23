@@ -422,7 +422,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         o2fg.bounds = Rectangle(790, 25, 100, o2Height)
 
         if (app.oxygen == 0) {
-            println("DEAD")
+            EndPopup(app).isVisible = true
         }
 
         val playerLoc = app.playerLoc
@@ -558,7 +558,7 @@ class EndPopup(val app: App): JDialog(), ActionListener {
      * Set up the dialog window
      */
     private fun configureWindow() {
-        title = "The Triton - Back in your Submersible"
+        title = "The Triton - Ending"
         contentPane.preferredSize = Dimension(500, 350)
         isResizable = false
         isModal = true
@@ -572,7 +572,15 @@ class EndPopup(val app: App): JDialog(), ActionListener {
     private fun addControls() {
 
         val headerFont = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-        val header = JLabel("<html>Hello there diver! </html>")
+
+        val headerText :String
+        if (app.oxygen <= 0) {
+            headerText = "You ran out of oxygen."
+        }
+        else {
+            headerText = "Hello there diver!"
+        }
+        val header = JLabel(headerText)
         header.bounds = Rectangle(35, 25, 440, 500)
         header.verticalAlignment = SwingConstants.TOP
         header.font = headerFont
@@ -594,13 +602,16 @@ class EndPopup(val app: App): JDialog(), ActionListener {
         val no = app.inventory.size //number of total items in inventory
         val noImp = app.importantItems //number of important items in inventory
 
-        if(app.inventory.isEmpty() && app.oxygen > 15){
+        if (app.oxygen <= 0){ //dying
+            text = "Your vision fades as your last breath escapes. The cold silence of the deep claims another explorer. Maybe one day someone else will figure out what sunk the Triton."
+        }
+        else if(app.inventory.isEmpty() && app.oxygen > app.MAX_OXYGEN/3){
             text = "Why are you back so soon? You haven't found any items yet. Only grab the 'way out' when you're ready to leave. <br><br> Now get back in there!"
         }
-        else if(app.inventory.isEmpty() && app.oxygen <= 15) {
+        else if(app.inventory.isEmpty()) {
             text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back."
         }
-        else if(noImp==0){
+        else if(noImp==0){ //no important items, but at least something
             text = "Welcome back diver. You don't seem to have found any items that will help us figure out why the Triton sunk, but it's nice to have some items to show for our efforts."
         }
         else if (noImp==1||noImp==2){
