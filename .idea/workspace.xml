@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e87e7796-fb2c-427a-a5eb-03e1e160f22d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/checklist.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/checklist.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,6 +15,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/Main.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -93,7 +95,7 @@
       <workItem from="1744331311373" duration="7615000" />
       <workItem from="1744772652070" duration="2685000" />
       <workItem from="1745199283265" duration="43000" />
-      <workItem from="1745368142179" duration="7462000" />
+      <workItem from="1745368142179" duration="11932000" />
     </task>
     <servers />
   </component>

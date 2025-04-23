@@ -51,7 +51,7 @@ fun setupSubmarine(): Room {
     val westCorridor = Room("West Corridor","screw",null,"This corridor continues to the west and east. There is a door to the north that has a ⚡ symbol on it.")
     val electrical = Room("Electrical","component","computer","Wires and circuit boards are everywhere. Many wires are tangled together in giant knots and balls. Most of the equipment seems to be in utter disarray.")
     val storage = Room("General Storage","oxygen tank","unopened crate","There are many full crates in this room, but most seem to heavy and big to carry. There's a corridor to the east, and two rooms to the north and west. Strangely, the northern room seems to be locked. Maybe there is a key somewhere?")
-    val secStorage = Room("Secure Storage","locked chest","small box","You use the key that you found in the Captain's Quarters to unlock the Secure Storage. These items are most likely the most valuable on the vessel.")
+    val secStorage = Room("Secure Storage","locked chest ✪","small box","You use the key that you found in the Captain's Quarters to unlock the Secure Storage. These items are most likely the most valuable on the vessel.")
     val moonpool = Room("Moon pool","way out",null,"There is a hole in the floor that used to be used to deploy small vessels & ROVs. You could probably jump through the pool and swim out to your submersible if you're lost.")
     val eastCorridor = Room("East Corridor",null,null,"There is a door to the north that reads 'CABIN ALPHA'. It most likely housed some of the crew. The corridor continues to the east.")
     val eastCorridor2 = Room("Far E. Corridor","wristwatch",null,"The door to the north reads 'CABIN BRAVO', to the east is 'CABIN CHARLIE'. A corridor continues to the west.")
@@ -63,14 +63,14 @@ fun setupSubmarine(): Room {
     val upperDeck = Room("Upper Deck",null,null,"This corridor seems to be more secure than the others. It continues through a heavy door to the north, and stairs to the south. There are two rooms to the east & west.")
     val bridge = Room("The Bridge",null,null,"This is where the main controls for the sub are. You can see the dark abyss that is the sea through a small porthole to the north. The captain's quarters are probably near by.")
     val captain = Room("Captain's quarters","key","lock box","This is where the captain stayed. It is very cushy and comfortable compared to everywhere else in the vessel. This room is definitely worth searching further.")
-    val messHall = Room("Mess Hall","crew roster",null,"There are two big tables in the centre of this room. This is where the crew would come to eat. There is a pot on the flower that probably used to contain a plant.")
+    val messHall = Room("Mess Hall","crew roster ✪",null,"There are two big tables in the centre of this room. This is where the crew would come to eat. There is a pot on the flower that probably used to contain a plant.")
     val kitchen = Room("Kitchen","silverware",null,"This is where all the food for the crew was cooked. You can't tell the difference between the bench tops and the ovens because of the sheer amount of rust and detritus.")
     val recRoom = Room("Rec-Room","dartboard","biscuit tin","This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
-    val comms = Room("Communications","keyboard","hard drive","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
+    val comms = Room("Communications","keyboard","hard drive ✪","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
     val engine = Room("Engine Room","wrench","toolbox","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
-    val lab = Room("Laboratory","vile of chemicals","microscope","This appears to be some kind of lab. There are glass viles and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
-    val ballast = Room("The Ballast","damaged pipe","bent wrench","There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
-    val medical = Room("Medical Bay","first aid kit","strange syringe","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
+    val lab = Room("Laboratory","microscope","vile of chemicals","This appears to be some kind of lab. There are glass viles and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
+    val ballast = Room("The Ballast","damaged pipe ✪","bent wrench","There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
+    val medical = Room("Medical Bay","first aid kit","strange syringe ✪","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
     sea.north = entrance
 
@@ -165,6 +165,7 @@ class App() {
     // Data fields
     var oxygen = MAX_OXYGEN
     var inventory = mutableListOf<String>()
+    var importantItems = 0
     var hasKey = false
 
     // Application logic functions
@@ -208,7 +209,12 @@ class App() {
         when(item){
             "Oxygen tank" -> oxygen = MAX_OXYGEN
             "Key" -> {hasKey = true; inventory.add(item)}
-            "Way out" -> LeavePopup(this).isVisible = true
+            "Way out" -> EndPopup(this).isVisible = true
+            "Damaged pipe ✪" -> {importantItems++; inventory.add(item)}
+            "Crew roster ✪" -> {importantItems++; inventory.add(item)}
+            "Strange syringe ✪" -> {importantItems++; inventory.add(item)}
+            "Hard drive ✪" -> {importantItems++; inventory.add(item)}
+            "Locked chest ✪" -> {importantItems++; inventory.add(item)}
             else -> inventory.add(item)
         }
     }
@@ -511,7 +517,7 @@ class TutorialPopup(): JDialog() {
      */
     private fun configureWindow() {
         title = "The Triton - Tutorial"
-        contentPane.preferredSize = Dimension(500, 500)
+        contentPane.preferredSize = Dimension(500, 520)
         isResizable = false
         isModal = true
         layout = null
@@ -525,7 +531,7 @@ class TutorialPopup(): JDialog() {
         val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 16)
 
         // Adding <html> to the label text allows it to wrap
-        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. If you can see 'a way out' using the grab button will exit the submarine. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your inventory \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
+        val message = JLabel("<html>Welcome to the Triton, diver. This wreck of a submarine has been sitting on the seafloor for a while now. It's your job to check it for valuables, and any clues as to why she sunk. <br> <br> You can use the arrow buttons to move around the submarine. Each move will take up some of your O₂. Make sure you don't get lost, and remember your way around. <br> <br> At the top of the screen you will see any items in the room that are immediately obvious to you. Use the \uD83D\uDD91 button to grab any items there. Items of particular importance will be marked with a ✪ symbol. These are the items that we really want. If you can see 'a way out' using the grab button will exit the submarine. <br> <br> If the room looks empty, you may search the room using the \uD83D\uDC41 button. Any items that you find in the room will then appear in your observations. Be careful, because searching rooms will also take up some of your O₂. <br> <br> Any items that you collect will be stored in your inventory \uD83C\uDF92. Some items may be relevant to helping you explore. <br> <br> There's no telling what you might find in there diver. Good luck. </html>")
         message.bounds = Rectangle(25, 25, 450, 500)
         message.verticalAlignment = SwingConstants.TOP
         message.font = baseFont
@@ -534,7 +540,7 @@ class TutorialPopup(): JDialog() {
 }
 
 
-class LeavePopup(val app: App): JDialog(), ActionListener {
+class EndPopup(val app: App): JDialog(), ActionListener {
 
     private lateinit var quitButton: JButton
     private lateinit var restartButton: JButton
@@ -573,20 +579,20 @@ class LeavePopup(val app: App): JDialog(), ActionListener {
         add(header)
 
         quitButton = JButton("Quit")
-        quitButton.bounds = Rectangle(25, 200, 450, 50)
+        quitButton.bounds = Rectangle(25, 275, 200, 50)
         quitButton.font = headerFont
         quitButton.addActionListener(this)     // Handle any clicks
         add(quitButton)
 
         restartButton = JButton("Replay")
-        restartButton.bounds = Rectangle(25, 275, 450, 50)
+        restartButton.bounds = Rectangle(275, 275, 200, 50)
         restartButton.font = headerFont
         restartButton.addActionListener(this)     // Handle any clicks
         add(restartButton)
 
         val text: String
         val no = app.inventory.size //number of total items in inventory
-        val noImp = 4 //number of
+        val noImp = app.importantItems //number of important items in inventory
 
         if(app.inventory.isEmpty() && app.oxygen > 15){
             text = "Why are you back so soon? You haven't found any items yet. Only grab the 'way out' when you're ready to leave. <br><br> Now get back in there!"
@@ -594,15 +600,32 @@ class LeavePopup(val app: App): JDialog(), ActionListener {
         else if(app.inventory.isEmpty() && app.oxygen <= 15) {
             text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back."
         }
-        else {
-            text = "Glad to see you back diver, I was getting worried. These items should aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface. <br><br> $no/31 items discovered • "
+        else if(noImp==0){
+            text = "Welcome back diver. You don't seem to have found any items that will help us figure out why the Triton sunk, but it's nice to have some items to show for our efforts."
         }
+        else if (noImp==1||noImp==2){
+            text = "Glad to see you back diver, I was getting worried. We have a small amount of information about what happened here now. Good job. It's a shame you didn't find more though."
+        }
+        else if (noImp==3||noImp==4){
+            text = "Glad to see you back diver, I was getting worried. With these items, we should be able to get a fair amount of information about what happened here. If you're ready to leave, we can ascend to the surface."
+        }
+        else { // noImp == 5
+            text = "Glad to see you back diver, I was getting worried. Excellent job! These items should greatly aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface."
+        }
+
 
         val message = JLabel("<html>$text</html>")
         message.bounds = Rectangle(35, 70, 440, 500)
         message.verticalAlignment = SwingConstants.TOP
         message.font = Font(Font.SANS_SERIF, Font.PLAIN, 16)
         add(message)
+
+        val stats = JLabel("$no/30 items discovered  •  $noImp/5 important ✪ items found")
+        stats.bounds = Rectangle(25, 200, 450, 50)
+        stats.verticalAlignment = SwingConstants.CENTER
+        stats.horizontalAlignment = SwingConstants.CENTER
+        stats.font = Font(Font.SANS_SERIF, Font.PLAIN, 16)
+        add(stats)
     }
 
     /**
