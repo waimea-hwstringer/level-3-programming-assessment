@@ -150,7 +150,7 @@ fun setupSubmarine(): Room {
     recRoom.south = messHall
     recRoom.west = northCorridor2
 
-    return sea
+    return sea  //player will always start here
 }
 
 /**
@@ -165,7 +165,7 @@ class App() {
     // Data fields
     var oxygen = MAX_OXYGEN
     var inventory = mutableListOf<String>()
-    var importantItems = 0
+    var inventoryImportant = 0
     var hasKey = false
 
     // Application logic functions
@@ -210,11 +210,11 @@ class App() {
             "Oxygen tank" -> oxygen = MAX_OXYGEN
             "Key" -> {hasKey = true; inventory.add(item)}
             "Way out" -> EndPopup(this).isVisible = true
-            "Damaged pipe ✪" -> {importantItems++; inventory.add(item)}
-            "Crew roster ✪" -> {importantItems++; inventory.add(item)}
-            "Strange syringe ✪" -> {importantItems++; inventory.add(item)}
-            "Hard drive ✪" -> {importantItems++; inventory.add(item)}
-            "Locked chest ✪" -> {importantItems++; inventory.add(item)}
+            "Damaged pipe ✪" -> {inventoryImportant++; inventory.add(item)}
+            "Crew roster ✪" -> {inventoryImportant++; inventory.add(item)}
+            "Strange syringe ✪" -> {inventoryImportant++; inventory.add(item)}
+            "Hard drive ✪" -> {inventoryImportant++; inventory.add(item)}
+            "Locked chest ✪" -> {inventoryImportant++; inventory.add(item)}
             else -> inventory.add(item)
         }
     }
@@ -246,12 +246,13 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var downButton: JButton
     private lateinit var rightButton: JButton
 
-    private lateinit var o2Symbol: JLabel //Oxygen symbol
-    private lateinit var o2bg: JLabel     //Oxygen bar background
-    private lateinit var o2fg: JLabel     //Oxygen bar foreground
+    private lateinit var o2Symbol: JLabel //Oxygen symbol (O2)
+    private lateinit var o2bg: JLabel     //Oxygen bar background (the blue part)
+    private lateinit var o2fg: JLabel     //Oxygen bar foreground (the light grey)
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
     private lateinit var tutorialButton: JButton
+    private lateinit var deathButton: JButton //only visible once the player has died
 
     /**
      * Configure the UI and display it
@@ -315,7 +316,6 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         locItems.bounds = Rectangle(430, 80, 340, 160)
         locItems.font = baseFont
         locItems.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
-
         add(locItems)
 
         //---Navigation buttons
@@ -395,7 +395,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         inventory.bounds = Rectangle(0, 0, 270, 320)
         inventory.font = baseFont
 
-        val inventoryScroll = JScrollPane(inventory)
+        val inventoryScroll = JScrollPane(inventory) //adds a scroll bar to the inventory
         inventoryScroll.bounds = Rectangle(910, 80, 270, 320)
         inventoryScroll.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         inventoryScroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
@@ -406,6 +406,13 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         tutorialButton.font = baseFont
         tutorialButton.addActionListener(this)     // Handle any clicks
         add(tutorialButton)
+
+        deathButton = JButton("☠") //only visible when the player has died
+        deathButton.bounds = Rectangle(460, 105, 280, 110)
+        deathButton.font = baseFont
+        deathButton.addActionListener(this)     // Handle any clicks
+        deathButton.isVisible = false
+        add(deathButton)
     }
 
 
@@ -421,7 +428,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
         val o2Height = (app.MAX_OXYGEN - app.oxygen) * 450 / app.MAX_OXYGEN
         o2fg.bounds = Rectangle(790, 25, 100, o2Height)
 
-        if (app.oxygen == 0) {
+        if (app.oxygen <= 0) { //show popup when dead
             EndPopup(app).isVisible = true
         }
 
@@ -448,14 +455,29 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 <div style='padding: 10px;'>
                     ${app.inventory.mapIndexed { index, item -> "${index + 1}. $item" }.joinToString("<br>")}
                 </div>
+            </html>
         """.trimIndent()
 
-        if(app.playerLoc.name == "General Storage" && !app.hasKey) {
+        if(app.playerLoc.name == "General Storage" && !app.hasKey) { //displays a lock symbol on the secure storage
             upButton.text = "\uD83D\uDD12"
             upButton.isEnabled = false
         }
         else {
             upButton.text = "↑"
+        }
+
+        deathButton.isVisible = false //When alive death button is hidden
+
+        if(app.oxygen <= 0){ //When dead disables all movement & shows death button
+            upButton.isEnabled = false
+            rightButton.isEnabled = false
+            downButton.isEnabled = false
+            leftButton.isEnabled = false
+            grabButton.isEnabled = false
+            searchButton.isEnabled = false
+
+            locItems.text = ""
+            deathButton.isVisible = true
         }
     }
 
@@ -494,6 +516,11 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
                 TutorialPopup().apply {
                     updateView()
                     isVisible = true
+                }
+            }
+            deathButton -> {
+                EndPopup(app).apply {
+                    updateView()
                 }
             }
         }
@@ -600,7 +627,7 @@ class EndPopup(val app: App): JDialog(), ActionListener {
 
         val text: String
         val no = app.inventory.size //number of total items in inventory
-        val noImp = app.importantItems //number of important items in inventory
+        val noImp = app.inventoryImportant //number of important items in inventory
 
         if (app.oxygen <= 0){ //dying
             text = "Your vision fades as your last breath escapes. The cold silence of the deep claims another explorer. Maybe one day someone else will figure out what sunk the Triton."
