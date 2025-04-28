@@ -38,7 +38,7 @@ The program structure:
 The program code:
 - [x] Is **indented** correctly
 - [x] Is **laid-out clearly**
-- [ ] Contains **comments** that help in understanding how it works
+- [x] Contains **comments** that help in understanding how it works
 
 ### Program Testing
 
@@ -106,7 +106,7 @@ The program has been tested using:
 
 Program flexibility and maintainability is aided by:
 - [x] **Constants** being used to define key values, and used throughout the program
-- [ ] Variable values being **derived at run-time** (from other variables / constants)
+- [x] Variable values being **derived at run-time** (from other variables / constants)
 - [x] Literal values only being used if they **make sense**, and they don't impact program flexibility
 
 Program flexibility and maintainability is aided by good program structure:

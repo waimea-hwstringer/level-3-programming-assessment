@@ -2,7 +2,7 @@
  * ====================================================================================
  * Programming Project for NCEA Level 3, Standard 91906
  * ------------------------------------------------------------------------------------
- * Project Name:   PROJECT NAME HERE
+ * Project Name:   The Triton: Treasure Seeker
  * Project Author: Harry Stringer
  * GitHub Repo:    https://github.com/waimea-hwstringer/level-3-programming-assessment
  * ------------------------------------------------------------------------------------
@@ -45,14 +45,14 @@ class Room(
 
 
 
-fun setupSubmarine(): Room {
+fun setupSubmarine(): Room { //Instantiates all rooms in the submarine
     val sea = Room("The Sea","way out",null,"The Triton submarine looms ahead. There is a gaping tear in the hull that you can squeeze into. Return here after you've finished exploring the wreck, so you can ascend to the surface.")
     val entrance = Room("Main Entrance",null,"shoe","There appear to be three hallways ahead. This probably isn't the actual entrance to the sub, but the tear in the hull makes it a convenient entrance for you. You can go back through the hole to your south if you'd like to return to the surface.")
     val westCorridor = Room("West Corridor","screw",null,"This corridor continues to the west and east. There is a door to the north that has a ⚡ symbol on it.")
     val electrical = Room("Electrical","component","computer","Wires and circuit boards are everywhere. Many wires are tangled together in giant knots and balls. Most of the equipment seems to be in utter disarray.")
     val storage = Room("General Storage","oxygen tank","unopened crate","There are many full crates in this room, but most seem to heavy and big to carry. There's a corridor to the east, and two rooms to the north and west. Strangely, the northern room seems to be locked. Maybe there is a key somewhere?")
     val secStorage = Room("Secure Storage","locked chest ✪","small box","You use the key that you found in the Captain's Quarters to unlock the Secure Storage. These items are most likely the most valuable on the vessel.")
-    val moonpool = Room("Moon pool","way out",null,"There is a hole in the floor that used to be used to deploy small vessels & ROVs. You could probably jump through the pool and swim out to your submersible if you're lost.")
+    val moonPool = Room("Moon Pool","way out",null,"There is a hole in the floor that used to be used to deploy small vessels & ROVs. You could probably jump through the pool and swim out to your submersible if you're lost.")
     val eastCorridor = Room("East Corridor",null,null,"There is a door to the north that reads 'CABIN ALPHA'. It most likely housed some of the crew. The corridor continues to the east.")
     val eastCorridor2 = Room("Far E. Corridor","wristwatch",null,"The door to the north reads 'CABIN BRAVO', to the east is 'CABIN CHARLIE'. A corridor continues to the west.")
     val crew1 = Room("Cabin Alpha","family photo","wedding ring","Barracks for some of the crew. Sleeps six. The room is decorated with photos of family members on the wall, but other than that it contains nothing of note.")
@@ -66,12 +66,13 @@ fun setupSubmarine(): Room {
     val messHall = Room("Mess Hall","crew roster ✪",null,"There are two big tables in the centre of this room. This is where the crew would come to eat. There is a pot on the flower that probably used to contain a plant.")
     val kitchen = Room("Kitchen","silverware",null,"This is where all the food for the crew was cooked. You can't tell the difference between the bench tops and the ovens because of the sheer amount of rust and detritus.")
     val recRoom = Room("Rec-Room","dartboard","biscuit tin","This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
-    val comms = Room("Communications","keyboard","hard drive ✪","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
+    val communications = Room("Communications","keyboard","hard drive ✪","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
     val engine = Room("Engine Room","wrench","toolbox","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
-    val lab = Room("Laboratory","microscope","vile of chemicals","This appears to be some kind of lab. There are glass viles and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
+    val lab = Room("Laboratory","microscope","vile of chemicals","This appears to be some kind of lab. There are glass vials and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
     val ballast = Room("The Ballast","damaged pipe ✪","bent wrench","There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
     val medical = Room("Medical Bay","first aid kit","strange syringe ✪","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
+    //Connect all the doors between the rooms
     sea.north = entrance
 
     entrance.north = northCorridor
@@ -103,10 +104,10 @@ fun setupSubmarine(): Room {
 
     storage.north = secStorage
     storage.east = westCorridor
-    storage.west = moonpool
+    storage.west = moonPool
 
     secStorage.south = storage
-    moonpool.east = storage
+    moonPool.east = storage
 
     eastCorridor.west = entrance
     eastCorridor.east = eastCorridor2
@@ -132,7 +133,7 @@ fun setupSubmarine(): Room {
 
     upperDeck.north = bridge
     upperDeck.south = northCorridor2
-    upperDeck.east = comms
+    upperDeck.east = communications
     upperDeck.west = engine
 
     bridge.south = upperDeck
@@ -141,12 +142,14 @@ fun setupSubmarine(): Room {
 
     captain.west = bridge
 
-    comms.west = upperDeck
+    communications.west = upperDeck
 
     messHall.north = recRoom
     messHall.west = northCorridor
     messHall.east = kitchen
+
     kitchen.west = messHall
+
     recRoom.south = messHall
     recRoom.west = northCorridor2
 
@@ -158,18 +161,17 @@ fun setupSubmarine(): Room {
  * This is the place where any application data should be
  * stored, plus any application logic functions
  */
-class App() {
-    // Constants defining any key values
+class App {
+    // Constants defining key values
     val MAX_OXYGEN = 40
 
     // Data fields
     var oxygen = MAX_OXYGEN
     var inventory = mutableListOf<String>()
-    var inventoryImportant = 0
+    var inventoryImportant = 0 //counts how many 'important' items are in the inventory
     var hasKey = false
 
     // Application logic functions
-
     var playerLoc: Room
 
     init {
@@ -190,12 +192,13 @@ class App() {
         }
     }
 
+    //Searches the room to find secret items & places them in vision
     fun search(room: Room) {
         oxygen--
         playerLoc.searched = true
         room.immediateContents = room.secretContents
     }
-
+    //Grabs item that is visible in the room
     fun grab(room: Room) {
         val item = room.immediateContents!!.replaceFirstChar { it.uppercaseChar() }
         useItem(item)
@@ -204,21 +207,17 @@ class App() {
         }
 
     }
-
-    fun useItem(item: String) {
-        when(item){
-            "Oxygen tank" -> oxygen = MAX_OXYGEN
-            "Key" -> {hasKey = true; inventory.add(item)}
-            "Way out" -> EndPopup(this).isVisible = true
-            "Damaged pipe ✪" -> {inventoryImportant++; inventory.add(item)}
-            "Crew roster ✪" -> {inventoryImportant++; inventory.add(item)}
-            "Strange syringe ✪" -> {inventoryImportant++; inventory.add(item)}
-            "Hard drive ✪" -> {inventoryImportant++; inventory.add(item)}
-            "Locked chest ✪" -> {inventoryImportant++; inventory.add(item)}
+    //When grabbing an item, checks if it has any special effects
+    private fun useItem(item: String) {
+        when {
+            item == "Oxygen tank" -> oxygen = MAX_OXYGEN
+            item == "Key" -> { hasKey = true; inventory.add(item) }
+            item == "Way out" -> EndPopup(this).isVisible = true
+            item.contains('✪') -> { inventoryImportant++; inventory.add(item) }
             else -> inventory.add(item)
         }
     }
-
+    //Resets all progress to play again
     fun resetGame() {
         playerLoc = setupSubmarine()
         oxygen = MAX_OXYGEN
@@ -231,13 +230,13 @@ class App() {
  * Defines the UI and responds to events
  * The app model should be passwd as an argument
  */
-class MainWindow(val app: App) : JFrame(), ActionListener {
+class MainWindow(private val app: App) : JFrame(), ActionListener {
 
     // Fields to hold the UI elements
     private lateinit var locName: JLabel
     private lateinit var locDesc: JLabel
-    private lateinit var locItems: JLabel
-    private lateinit var viewHeader: JLabel
+    private lateinit var locItems: JLabel   //Tells the player what items are in the room
+    private lateinit var viewHeader: JLabel //Header for the room items
 
     private lateinit var searchButton: JButton
     private lateinit var upButton: JButton
@@ -246,9 +245,9 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private lateinit var downButton: JButton
     private lateinit var rightButton: JButton
 
-    private lateinit var o2Symbol: JLabel //Oxygen symbol (O2)
-    private lateinit var o2bg: JLabel     //Oxygen bar background (the blue part)
-    private lateinit var o2fg: JLabel     //Oxygen bar foreground (the light grey)
+    private lateinit var o2Symbol: JLabel  //Oxygen symbol (O₂)
+    private lateinit var o2bg: JLabel      //Oxygen bar background (the blue part)
+    private lateinit var o2fg: JLabel      //Oxygen bar foreground (the light grey)
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
     private lateinit var tutorialButton: JButton
@@ -420,7 +419,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      * Update the UI controls based on the current state
      * of the application model
      */
-    fun updateView() {
+    private fun updateView() {
 
         locName.text = app.playerLoc.name
         locDesc.text = "<html> <div style='padding: 8px;'> ${app.playerLoc.desc} </div> </html>"
@@ -529,7 +528,7 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
 
 
 
-class TutorialPopup(): JDialog() {
+class TutorialPopup: JDialog() {
     /**
      * Configure the UI
      */
@@ -567,7 +566,7 @@ class TutorialPopup(): JDialog() {
 }
 
 
-class EndPopup(val app: App): JDialog(), ActionListener {
+class EndPopup(private val app: App): JDialog(), ActionListener {
 
     private lateinit var quitButton: JButton
     private lateinit var restartButton: JButton
@@ -599,13 +598,10 @@ class EndPopup(val app: App): JDialog(), ActionListener {
     private fun addControls() {
 
         val headerFont = Font(Font.SANS_SERIF, Font.PLAIN, 24)
-
-        val headerText :String
-        if (app.oxygen <= 0) {
-            headerText = "You ran out of oxygen."
-        }
-        else {
-            headerText = "Hello there diver!"
+        val headerText :String = if (app.oxygen <= 0) {
+            "You ran out of oxygen."
+        } else {
+            "Hello there diver!"
         }
         val header = JLabel(headerText)
         header.bounds = Rectangle(35, 25, 440, 500)
