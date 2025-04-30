@@ -10,7 +10,22 @@ Terminology:
 
 ---
 
-## Moving through the map
+
+## Setting Up The Map
+
+Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
+
+### Test Data To Use
+
+Details of test data and reasons for selection. Details of test data and reasons for selection. Details of test data and reasons for selection.
+
+### Expected Test Result
+
+Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen.
+
+---
+
+## Moving Through The Map
 
 This is to test that the player can move between different locations on the map. There are four main movement
  buttons: up, down, left & right. The buttons should only be enabled if there is a room in that position. Eg.
@@ -29,7 +44,7 @@ With the rooms stated above, the movement buttons should be enabled & disabled a
 
 ---
 
-## UI Information updating with movement
+## UI Information Updating With Movement
 
 As the player moves to different rooms, UI elements should change to reflect this.
 
@@ -86,31 +101,52 @@ search it twice.
 The Main Entrance room initially has no visible contents. Upon being searched,
 it should display the item "shoe".
 The room "West Corridor" initially has the item "Screw". Because there is an item
-already visible to the player, the search button should be disabled.
+already visible to the player, the search button should be disabled. When the player
+grabs the visible item, the search button should be enabled. Searching the room will
+reveal any secret items, and the search button should now be permanently disabled for
+that room regardless of if an item was revealed.
 
 ### Expected Test Result
 
-Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen.
+Searching the room "Main Entrance" should reveal the item "shoe".
+In the room "West Corridor" the search button should be initially disabled as there
+are already contents in the room. After grabbing the contents, the search button 
+should be re-enabled. Searching the room should not reveal any secret contents.
+In both the room "North Corridor" the search button should be enabled immediately as
+it has no immediate contents. Searching the room should yield no items.
+In all three circumstances, the search button should be disabled after searching the
+room and should never be re-enabled in that room again.
 
 ---
 
-## Example Test Name
+## Winning The Game
 
-Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
+In order to win the game, the player's goal is to find as many items in the wreck as
+possible. There are 20 normal items, and 5 special items. The game can be won if 
+the player finds three or more special items, it is classed as a win. Additionally, 
+if the player attains every single item in the vessel there should be a special 
+message rewarding them.
 
 ### Test Data To Use
 
-Details of test data and reasons for selection. Details of test data and reasons for selection. Details of test data and reasons for selection.
+- Collect three special items (worst win scenario)
+- Collect four special items (worst win scenario - same score as 3 items)
+- Collect five special items (most common win scenario, and a a good score)
+- Collect every single item (completionist win scenario that is fairly hard to attain)
 
 ### Expected Test Result
 
-Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen.
+- With 3-4 items collected, the end screen should say that the player won but could do better
+- With 5 items the end screen says that the player won
+- With all items the end screen says that the player went above & beyond finding everything
 
 ---
 
-## Example Test Name
+## Dying & Losing The Game
 
-Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
+If the player runs out of oxygen, they should die (thus they lose). Additionally, 
+if the player finds less than three important items in the wreckage and survives, they
+still lose the game as they did not find enough valuable items.
 
 ### Test Data To Use
 

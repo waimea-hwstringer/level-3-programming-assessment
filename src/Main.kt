@@ -68,7 +68,7 @@ fun setupSubmarine(): Room { //Instantiates all rooms in the submarine
     val recRoom = Room("Rec-Room","dartboard","biscuit tin","This room looks much more cozy than the other rather cold rooms. There looks to be a dartboard on the wall, as well as a couple of couches.")
     val communications = Room("Communications","keyboard","hard drive ✪","Big screens coat the walls of this room. There are also many wires and computers on some tables. This is most likely where the Triton would broadcast its location and information back to HQ.")
     val engine = Room("Engine Room","wrench","toolbox","A great rusted mass can be seen in centre of this room. It seems to be what's left of the engine.")
-    val lab = Room("Laboratory","microscope","vile of chemicals","This appears to be some kind of lab. There are glass vials and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
+    val lab = Room("Laboratory","microscope","vial of chemicals","This appears to be some kind of lab. There are glass vials and beakers. Most seem to be smashed. There is a large and very heavy crate with a large ☢ sign on it. Best to leave that.")
     val ballast = Room("The Ballast","damaged pipe ✪","bent wrench","There are several large tanks in the middle of this room, with a mess of pipes tangling from the ceiling. It appears that many of the pipes imploded. This may be the reason that the submarine sunk, as the ballast is crucial for keeping the vessel controllable.")
     val medical = Room("Medical Bay","first aid kit","strange syringe ✪","There are a couple of beds in this room, as well as what looks to be an operating table. Various strange utensils are littered on the floor, but they are so rusty they crumble to the touch.")
 
@@ -163,7 +163,7 @@ fun setupSubmarine(): Room { //Instantiates all rooms in the submarine
  */
 class App {
     // Constants defining key values
-    val MAX_OXYGEN = 40
+    val MAX_OXYGEN = 45
 
     // Data fields
     var oxygen = MAX_OXYGEN
@@ -222,6 +222,7 @@ class App {
         playerLoc = setupSubmarine()
         oxygen = MAX_OXYGEN
         inventory.clear()
+        inventoryImportant = 0
     }
 }
 
@@ -610,27 +611,34 @@ class EndPopup(private val app: App): JDialog(), ActionListener {
         val text: String
         val no = app.inventory.size //number of total items in inventory
         val noImp = app.inventoryImportant //number of important items in inventory
+        val winMessage: String
 
         if (app.oxygen <= 0){ //dying
-            text = "Your vision fades as your last breath escapes. The cold silence of the deep claims another explorer. Maybe one day someone else will figure out what sunk the Triton."
+            text = "Your vision fades as your last breath escapes. The cold silence of the deep claims another explorer. Maybe one day someone else will figure out what sunk the Triton. <br> <br> YOU LOST!"
         }
         else if(app.inventory.isEmpty() && app.oxygen > app.MAX_OXYGEN/3){
             text = "Why are you back so soon? You haven't found any items yet. Only grab the 'way out' when you're ready to leave. <br><br> Now get back in there!"
         }
         else if(app.inventory.isEmpty()) {
-            text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back."
+            text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back. <br> <br> You found no items at all! You lost."
         }
         else if(noImp==0){ //no important items, but at least something
-            text = "Welcome back diver. You don't seem to have found any items that will help us figure out why the Triton sunk, but it's nice to have some items to show for our efforts."
+            text = "Welcome back diver. You don't seem to have found any items that will help us figure out why the Triton sunk, but it's nice to have some items to show for our efforts. <br> <br> You found no information about how she sunk, you lost."
         }
         else if (noImp==1||noImp==2){
-            text = "Glad to see you back diver, I was getting worried. We have a small amount of information about what happened here now. Good job. It's a shame you didn't find more though."
+            text = "Glad to see you back diver, I was getting worried. We have a small amount of information about what happened here now. Good job. It's a shame you didn't find more though. <br> <br> You made it out, but many more important items can be found."
         }
         else if (noImp==3||noImp==4){
-            text = "Glad to see you back diver, I was getting worried. With these items, we should be able to get a fair amount of information about what happened here. If you're ready to leave, we can ascend to the surface."
+            text = "Glad to see you back diver, I was getting worried. With these items, we should be able to get a fair amount of information about what happened here. If you're ready to leave, we can ascend to the surface. <br> You found some key items, but more can be found. However, You found many important items and made it out, so you win!"
         }
-        else { // noImp == 5
-            text = "Glad to see you back diver, I was getting worried. Excellent job! These items should greatly aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface."
+        else if (noImp == 5){
+            text = "Glad to see you back diver, I was getting worried. Excellent job! These items should greatly aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface. <br> Congratulations! You found all important items & won The Triton: Treasure Seeker!"
+        }
+        else if(app.inventory.size == 30) { //map has 30 accessible items (not including O2 tank & "a way out")
+            text = "Glad to see you back diver, I was getting worried. Holy moly! I never thought you'd find that many items! With these items, we will undoubtedly figure out what happened, and get rich doing so! <br><br> You found every item and fully completed The Triton: Treasure Seeker!!!"
+        }
+        else {//This text shouldn't be accessible, but in case of a bug it is here. It is generic text
+            text = "Glad to see you back diver, I was getting worried. Let's see what goodies you brought back for us."
         }
 
 
