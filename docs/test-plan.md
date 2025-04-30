@@ -11,13 +11,15 @@ Terminology:
 ---
 
 
-## Setting Up The Map
+## Setting Up The Game
 
-Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
+All the rooms and their contents should be instantiated as soon as the game is opened. 
+The player should always start in the room "The Sea" with no items in the inventory. When 
+the program is run it should open a popup explaining how to play the game.
 
 ### Test Data To Use
 
-Details of test data and reasons for selection. Details of test data and reasons for selection. Details of test data and reasons for selection.
+Run the program & check that the tutorial opens & that the player spawns in "The Sea".
 
 ### Expected Test Result
 
@@ -147,6 +149,45 @@ message rewarding them.
 If the player runs out of oxygen, they should die (thus they lose). Additionally, 
 if the player finds less than three important items in the wreckage and survives, they
 still lose the game as they did not find enough valuable items.
+
+### Test Data To Use
+
+Move around and search rooms until the oxygen runs out. When the oxygen runs out, it should
+have a popup explaining that the player has died and ran out of oxygen. 
+Additionally, if the player returns with two or less important items they also lose the game.
+
+### Expected Test Result
+
+When the game ends either by dying or making it back to your submersible with few items, 
+the end popup should say that the player lost.
+
+---
+
+## Replaying Or Quitting
+
+When the game has finished, either by the player dying or making it back to their own 
+submersible (and then either winning or losing based on their items) there will be a popup.
+The popup will communicate to the player whether they won or lost and give them the 
+option to either replay the game or quit.
+
+### Test Data To Use
+
+- Move & search rooms until running out of oxygen should open popup
+- Entering the submersible should open the popup
+
+### Expected Test Result
+
+Quitting the game should close all windows & end the program.
+Replaying should reset all room contents, place the player back at the starting location,
+refill the oxygen & clear the inventory.
+If the player has died, then closing the popup will just end the program, but if they
+didn't die closing the popup will let them reenter the submarine to gather more items.
+
+---
+
+## Example
+
+Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
 
 ### Test Data To Use
 
