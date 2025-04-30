@@ -251,7 +251,6 @@ class MainWindow(private val app: App) : JFrame(), ActionListener {
     private lateinit var inventory: JLabel
     private lateinit var iHeader: JLabel
     private lateinit var tutorialButton: JButton
-    private lateinit var deathButton: JButton //only visible once the player has died
 
     /**
      * Configure the UI and display it
@@ -406,12 +405,6 @@ class MainWindow(private val app: App) : JFrame(), ActionListener {
         tutorialButton.addActionListener(this)     // Handle any clicks
         add(tutorialButton)
 
-        deathButton = JButton("☠") //only visible when the player has died
-        deathButton.bounds = Rectangle(460, 105, 280, 110)
-        deathButton.font = baseFont
-        deathButton.addActionListener(this)     // Handle any clicks
-        deathButton.isVisible = false
-        add(deathButton)
     }
 
 
@@ -464,20 +457,6 @@ class MainWindow(private val app: App) : JFrame(), ActionListener {
         else {
             upButton.text = "↑"
         }
-
-        deathButton.isVisible = false //When alive death button is hidden
-
-        if(app.oxygen <= 0){ //When dead disables all movement & shows death button
-            upButton.isEnabled = false
-            rightButton.isEnabled = false
-            downButton.isEnabled = false
-            leftButton.isEnabled = false
-            grabButton.isEnabled = false
-            searchButton.isEnabled = false
-
-            locItems.text = ""
-            deathButton.isVisible = true
-        }
     }
 
     /**
@@ -515,11 +494,6 @@ class MainWindow(private val app: App) : JFrame(), ActionListener {
                 TutorialPopup().apply {
                     updateView()
                     isVisible = true
-                }
-            }
-            deathButton -> {
-                EndPopup(app).apply {
-                    updateView()
                 }
             }
         }
@@ -578,6 +552,18 @@ class EndPopup(private val app: App): JDialog(), ActionListener {
         configureWindow()
         addControls()
         setLocationRelativeTo(null)     // Centre the window
+
+        defaultCloseOperation = DO_NOTHING_ON_CLOSE
+        addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent?) {
+                if (app.oxygen <= 0) {
+                    exitProcess(0)
+                } else {
+                    dispose()
+                }
+            }
+        })
+
     }
 
     /**
