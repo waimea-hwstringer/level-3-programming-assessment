@@ -49,7 +49,7 @@ The program has been tested and there is documented evidence that:
   - [x] other player actions
   - [x] scoring (if any)
   - [x] player win / lose states
-  - [ ] final feedback (if appropriate)
+  - [x] final feedback (if appropriate)
 - [x] **Valid (expected) data** has been used to test **all data inputs**
 - [x] Where tests have failed, **fixes** are discussed and **tests re-run**
 
@@ -89,13 +89,13 @@ The program code is well-commented:
 - [x] Comments accurately describe the **function and behaviour** of the code:
   - [x] Defining the **purpose** of functions / key blocks of code
   - [x] Explaining the **reason** (the '**why**') of key parts of the code
-  - [ ] Defining function **parameters** and/or **return values**
+  - [x] Defining function **parameters** and/or **return values**
 
 ### Program Testing
 
 The program has been tested using:
-- [ ] A test plan **prepared in advance** of the coding
-- [ ] A test plan that **defines test data values** to be used
+- [x] A test plan **prepared in advance** of the coding
+- [x] A test plan that **defines test data values** to be used
 - [ ] Test values that cover **boundary** (limit / edge) cases
 
 ---
@@ -131,7 +131,7 @@ The program code:
 ### Program Testing
 
 The program has been tested to be **robust**:
-- [ ] With a **comprehensive and thorough** test plan
-- [ ] Testing **regularly** throughput development, allowing **time for debugging**
+- [x] With a **comprehensive and thorough** test plan
+- [x] Testing **regularly** throughput development, allowing **time for debugging**
 - [ ] Using test values that cover **invalid** (unexpected) cases
 - [ ] Resulting in a program that **copes appropriately** with invalid inputs
