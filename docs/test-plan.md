@@ -32,7 +32,7 @@ Statement detailing what should happen. Statement detailing what should happen. 
 This is to test that the player can move between different locations on the map. There are four main movement
  buttons: up, down, left & right. The buttons should only be enabled if there is a room in that position. Eg.
 if the player is in room1 and room2 is to the right of room1, the only movement button enabled would be the
-right button.
+right button. 
 
 ### Test Data To Use
 
@@ -54,10 +54,11 @@ As the player moves to different rooms, UI elements should change to reflect thi
 
 The player starts in the room "The sea". When the game is started, It should say
 "The sea" at the top of the screen, with a more interesting description below.
-In the middle-top portion of the screen it will say what objects are directly 
+In the middle-top portion of the screen it will say what objects are directly
 observable by the player. As the player moves through rooms, these aspects will
 change to reflect what the room is and its contents. Additionally, with each move that
-the player makes, the oxygen bar should deplete.
+the player makes, the oxygen bar should deplete by a value of 1. The oxygen starts
+at a level of 45, but this can easily be configured with the MAX_OXYGEN value.
 
 ### Expected Test Result
 
@@ -92,12 +93,12 @@ and the visible items should change to nothing.
 ## Searching Rooms & Visible Items
 
 If a room does not have any immediately visible items, the player should be able
-to search the room to reveal hidden items. Doing so will deplete some oxygen. Searching
+to search the room to reveal hidden items. Doing so will deplete 1 oxygen. Searching
 a room can only be done if the room appears to be empty. When a room is searched,
 if it has any contents they should be displayed in the visible items section.
 If it has no hidden contents, the visible items section should say that the room
 is empty (it should already say this & not change). When a player searches a room,
-the search button should be permanently disabled for that room so that players won't 
+the search button should be permanently disabled for that room so that players won't
 search it twice.
 
 ### Test Data To Use
@@ -119,7 +120,8 @@ should be re-enabled. Searching the room should not reveal any secret contents.
 In both the room "North Corridor" the search button should be enabled immediately as
 it has no immediate contents. Searching the room should yield no items.
 In all three circumstances, the search button should be disabled after searching the
-room and should never be re-enabled in that room again.
+room and should never be re-enabled in that room again. Searching the room should 
+deplete 1 oxygen.
 
 ---
 
@@ -186,6 +188,25 @@ If the player has died, then closing the popup will just end the program, but if
 didn't die closing the popup will let them reenter the submarine to gather more items.
 
 ---
+
+## Special Items
+
+In the game there are three functionally unique items. These items do not act like other regular items.
+
+### Test Data To Use
+
+- Oxygen tank item
+- Key item
+- "A way out" (not a physical item but acts as an item)
+
+### Expected Test Result
+
+- Grabbing the oxygen tank should refill the player's oxygen to the max. The tank shouldn't be put in the player's inventory
+- The Secure Storage room is initially locked. Grabbing the key item allows the player to unlock it.
+- Grabbing "a way out" should bring up the submersible popup
+
+---
+
 
 ## Example
 

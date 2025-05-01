@@ -55,7 +55,8 @@ The player starts in the room "The sea". When the game is started, It should say
 In the middle-top portion of the screen it will say what objects are directly
 observable by the player. As the player moves through rooms, these aspects will
 change to reflect what the room is and its contents. Additionally, with each move that
-the player makes, the oxygen bar should deplete.
+the player makes, the oxygen bar should deplete by a value of 1. The oxygen starts
+at a level of 45, but this can easily be configured with the MAX_OXYGEN value.
 
 ### Test Result
 
@@ -91,7 +92,7 @@ In the rooms where there were no items visible (such as Main Entrance), the grab
 ## Searching Rooms & Visible Items
 
 If a room does not have any immediately visible items, the player should be able
-to search the room to reveal hidden items. Doing so will deplete some oxygen. Searching
+to search the room to reveal hidden items. Doing so will deplete 1 oxygen. Searching
 a room can only be done if the room appears to be empty. When a room is searched,
 if it has any contents they should be displayed in the visible items section.
 If it has no hidden contents, the visible items section should say that the room
@@ -113,7 +114,7 @@ that room regardless of if an item was revealed.
 
 ![searching rooms reveals hidden items if the room has hidden items.](screenshots/search.gif)
 
-Searching the main entrance revealed the shoe item. Searching the West Corridor was initially disabled as there was already an item in that room. When the item was grabbed the search button was enabled. After searching both rooms, the search button was disabled permanently for both of those rooms (but not for all rooms).
+Searching the main entrance revealed the shoe item. Searching the West Corridor was initially disabled as there was already an item in that room. When the item was grabbed the search button was enabled. After searching both rooms, the search button was disabled permanently for both of those rooms (but not for all rooms). The oxygen was depleted by 1.
 
 ---
 
@@ -169,7 +170,7 @@ no items and little oxygen, they lose the game.
 
 ### Test Result
 
-Player runs out of oxygen:
+Player's oxygen goes below the boundary level of 0:
 ![oxygen bar runs out and player dies](screenshots/death.gif)
 
 Player returns with little oxygen & nothing: (the reason that the player must have little oxygen for this loss is because if the player tries to leave with no items and most of their oxygen, this is most likely a mistake)
@@ -221,18 +222,41 @@ Both the quit & replay button work as intended. Closing the popup menu in the tw
 ---
 
 
-## Moving Through The Map
+## Unique Items
 
-This is to test that the player can move between different locations on the map. There are four main movement
-buttons: up, down, left & right. The buttons should only be enabled if there is a room in that position. Eg.
-if the player is in room1 and room2 is to the right of room1, the only movement button enabled would be the
-right button.
+In the game there are three functionally unique items. These items do not act like other regular items.
 
 ### Test Data Used
 
-In the Sea, only the
-up button should be enabled. Main entrance is above the sea, and in that room all movement buttons should be
-available. Next, to the right is the East Corridor. In that room, only the down button should be disabled.
+- Oxygen tank item
+- Key item
+- "A way out" (not a physical item but acts as an item)
+
+### Test Result
+
+Oxygen tank:
+![Oxygen tank gets grabbed & refills O2](screenshots/oxygenTank.gif)
+
+Key:
+![Secure Storage locked, but when player has key it is unlocked](screenshots/key.gif)
+
+A way out:
+![Grabbing "A way out" opens popup](screenshots/aWayOut.gif)
+
+Grabbing the unique items does different things depending on the item. Works as intended.
+
+---
+
+
+## Disabled Buttons Can't Be CLicked
+
+When a button gets disabled, it should be greyed out. Clicking it will not do anything.
+
+### Test Data Used
+
+- Click a disabled movement button
+- Click the search button when its disabled
+- Click the grab button when its disabled
 
 ### Test Result
 
@@ -263,4 +287,3 @@ available. Next, to the right is the East Corridor. In that room, only the down 
 Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result.
 
 ---
-
