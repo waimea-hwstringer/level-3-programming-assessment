@@ -100,7 +100,7 @@ fun setupSubmarine(): Room { //Instantiates all rooms in the submarine
     lab.west = electrical
 
     medical.north = lab
-    medical.east = northCorridor2
+    medical.east = northCorridor
 
     storage.north = secStorage
     storage.east = westCorridor
@@ -616,26 +616,26 @@ class EndPopup(private val app: App): JDialog(), ActionListener {
         if (app.oxygen <= 0){ //dying
             text = "Your vision fades as your last breath escapes. The cold silence of the deep claims another explorer. Maybe one day someone else will figure out what sunk the Triton. <br> <br> YOU LOST!"
         }
-        else if(app.inventory.isEmpty() && app.oxygen > app.MAX_OXYGEN/3){
+        else if(app.inventory.isEmpty() && app.oxygen > app.MAX_OXYGEN/3){ //most oxygen still in tank & no items, assume the player left by mistake
             text = "Why are you back so soon? You haven't found any items yet. Only grab the 'way out' when you're ready to leave. <br><br> Now get back in there!"
         }
         else if(app.inventory.isEmpty()) {
             text = "You're back empty handed, and nearly out of O2. Unfortunate that we won't find out how the Triton sunk. I'll take us back. <br> <br> You found no items at all! You lost."
         }
+        else if(app.inventory.size == 30) { //map has 30 accessible items (not including O2 tank & "a way out")
+            text = "Glad to see you back diver, I was getting worried. Holy moly! I never thought you'd find that many items! With these items, we will undoubtedly figure out what happened, and get rich doing so! <br><br> You found every item and fully completed The Triton: Treasure Seeker!!!"
+        }
         else if(noImp==0){ //no important items, but at least something
             text = "Welcome back diver. You don't seem to have found any items that will help us figure out why the Triton sunk, but it's nice to have some items to show for our efforts. <br> <br> You found no information about how she sunk, you lost."
         }
         else if (noImp==1||noImp==2){
-            text = "Glad to see you back diver, I was getting worried. We have a small amount of information about what happened here now. Good job. It's a shame you didn't find more though. <br> <br> You made it out, but many more important items can be found."
+            text = "Glad to see you back diver, I was getting worried. We have a small amount of information about what happened here now. Good job. It's a shame you didn't find more though. <br> <br> You made it out, but many more important items can be found. You lost."
         }
         else if (noImp==3||noImp==4){
-            text = "Glad to see you back diver, I was getting worried. With these items, we should be able to get a fair amount of information about what happened here. If you're ready to leave, we can ascend to the surface. <br> You found some key items, but more can be found. However, You found many important items and made it out, so you win!"
+            text = "Glad to see you back diver, I was getting worried. With these items, we should be able to get a fair amount of information about what happened here. If you're ready to leave, we can ascend to the surface. <br> You found some key items and made it out. You win! However, more can be found."
         }
         else if (noImp == 5){
             text = "Glad to see you back diver, I was getting worried. Excellent job! These items should greatly aid us in discovering what happened to this wreck. If you're ready to leave, we can ascend to the surface. <br> Congratulations! You found all important items & won The Triton: Treasure Seeker!"
-        }
-        else if(app.inventory.size == 30) { //map has 30 accessible items (not including O2 tank & "a way out")
-            text = "Glad to see you back diver, I was getting worried. Holy moly! I never thought you'd find that many items! With these items, we will undoubtedly figure out what happened, and get rich doing so! <br><br> You found every item and fully completed The Triton: Treasure Seeker!!!"
         }
         else {//This text shouldn't be accessible, but in case of a bug it is here. It is generic text
             text = "Glad to see you back diver, I was getting worried. Let's see what goodies you brought back for us."

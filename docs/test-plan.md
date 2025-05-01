@@ -56,13 +56,15 @@ The player starts in the room "The sea". When the game is started, It should say
 "The sea" at the top of the screen, with a more interesting description below.
 In the middle-top portion of the screen it will say what objects are directly 
 observable by the player. As the player moves through rooms, these aspects will
-change to reflect what the room is and its contents.
+change to reflect what the room is and its contents. Additionally, with each move that
+the player makes, the oxygen bar should deplete.
 
 ### Expected Test Result
 
 When the player is in "The Sea" it should describe the sea, and the player should
 be able to see "a way out". Moving north will put the player into "Main Entrance",
-Which should describe that room. The visible contents should be nothing.
+Which should describe that room. The visible contents should be nothing. When the player
+moves rooms, the oxygen level should go down.
 
 ---
 
