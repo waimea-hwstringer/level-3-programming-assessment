@@ -260,9 +260,9 @@ When a button gets disabled, it should be greyed out. Clicking it will not do an
 
 ### Test Result
 
-![example.png](screenshots/example.png)
+![example.png](screenshots/disabledButtons.gif)
 
-Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result.
+When clicking all buttons that are disabled, nothing happens. This works as intended.
 
 ---
 

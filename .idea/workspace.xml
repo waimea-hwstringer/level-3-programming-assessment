@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e87e7796-fb2c-427a-a5eb-03e1e160f22d" name="Changes" comment="test plan done?!">
-      <change afterPath="$PROJECT_DIR$/docs/screenshots/aWayOut.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/screenshots/key.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/screenshots/oxygenTank.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/development.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/death.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/disabledButtons.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/earlyMovement.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/submersible.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/tutorial.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/test-plan.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/test-plan.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/test-results.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/test-results.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +81,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\harry\OneDrive\Documents\My Stuff\School\Year 13\DTD\Kotlin\level-3-programming-assessment\docs\screenshots" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\harry\OneDrive\Documents\My Stuff\School\Year 13\DTD\Kotlin\level-3-programming-assessment\docs\screenshots" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
@@ -129,7 +137,7 @@
       <workItem from="1745968960784" duration="3675000" />
       <workItem from="1745986604342" duration="9838000" />
       <workItem from="1746083446360" duration="7698000" />
-      <workItem from="1746133204609" duration="2093000" />
+      <workItem from="1746133204609" duration="8467000" />
     </task>
     <task id="LOCAL-00001" summary="test plan done?!">
       <option name="closed" value="true" />

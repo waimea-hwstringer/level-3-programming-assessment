@@ -208,6 +208,23 @@ In the game there are three functionally unique items. These items do not act li
 ---
 
 
+## Disabled Buttons Can't Be CLicked
+
+When a button gets disabled, it should be greyed out. Clicking it will not do anything.
+
+### Test Data Used
+
+- Click a disabled movement button
+- Click the search button when its disabled
+- Click the grab button when its disabled
+
+### Expected Test Result
+
+When disabled buttons are clicked nothing should happen
+
+---
+
+
 ## Example
 
 Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
