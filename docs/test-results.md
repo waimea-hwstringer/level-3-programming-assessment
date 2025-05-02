@@ -248,7 +248,7 @@ Grabbing the unique items does different things depending on the item. Works as 
 ---
 
 
-## Disabled Buttons Can't Be CLicked
+## Disabled Buttons Can't Be Clicked
 
 When a button gets disabled, it should be greyed out. Clicking it will not do anything.
 
@@ -265,4 +265,13 @@ When a button gets disabled, it should be greyed out. Clicking it will not do an
 When clicking all buttons that are disabled, nothing happens. This works as intended.
 
 ---
+
+## Boundary Case: Oxygen
+
+### Test Data Used
+For this test, I lowered the MAX_OXYGEN value to 5. I should be able to make 5 moves and then there should be a death popup.
+
+### Test Result
+![player moves 5 times and popup opens](screenshots/maxox5.gif)
+
 

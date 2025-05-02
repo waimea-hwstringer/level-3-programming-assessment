@@ -10,9 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e87e7796-fb2c-427a-a5eb-03e1e160f22d" name="Changes" comment="test plan done?!">
+      <change afterPath="$PROJECT_DIR$/docs/screenshots/maxox5.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/test-plan.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/test-plan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/checklist.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/checklist.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/test-results.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/test-results.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +140,7 @@
       <workItem from="1746083446360" duration="7698000" />
       <workItem from="1746133204609" duration="8467000" />
       <workItem from="1746145950911" duration="909000" />
-      <workItem from="1746147105319" duration="447000" />
+      <workItem from="1746147105319" duration="2079000" />
     </task>
     <task id="LOCAL-00001" summary="test plan done?!">
       <option name="closed" value="true" />

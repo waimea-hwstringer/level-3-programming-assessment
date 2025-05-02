@@ -315,14 +315,14 @@ class MainWindow(private val app: App) : JFrame(), ActionListener { //needs app 
         locItems.bounds = Rectangle(430, 80, 340, 160)
         locItems.font = baseFont
         locItems.border = BorderFactory.createLineBorder(Color(78, 80, 82), 6)
-        //add(locItems)
+        add(locItems)
 
         //---Navigation buttons
         searchButton = JButton("\uD83D\uDC41")
         searchButton.bounds = Rectangle(430,260,100,100)
         searchButton.font = headerFont
         searchButton.addActionListener(this)     // Handle any clicks
-        //add(searchButton)
+        add(searchButton)
 
         upButton = JButton("↑")
         upButton.bounds = Rectangle(550,260,100,100)
@@ -334,7 +334,7 @@ class MainWindow(private val app: App) : JFrame(), ActionListener { //needs app 
         grabButton.bounds = Rectangle(670,260,100,100)
         grabButton.font = headerFont
         grabButton.addActionListener(this)     // Handle any clicks
-        //add(grabButton)
+        add(grabButton)
 
         leftButton = JButton("←")
         leftButton.bounds = Rectangle(430,380,100,100)
@@ -392,19 +392,19 @@ class MainWindow(private val app: App) : JFrame(), ActionListener { //needs app 
         inventory.horizontalAlignment = SwingConstants.LEFT
         inventory.verticalAlignment = SwingConstants.TOP
         inventory.bounds = Rectangle(0, 0, 270, 320)
-        //inventory.font = baseFont
+        inventory.font = baseFont
 
         val inventoryScroll = JScrollPane(inventory) //adds a scroll bar to the inventory
         inventoryScroll.bounds = Rectangle(910, 80, 270, 320)
         inventoryScroll.border = BorderFactory.createLineBorder(Color(175,175,175), 8) // Add a border
         inventoryScroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-        //add(inventoryScroll)
+        add(inventoryScroll)
 
         tutorialButton = JButton("ⓘ Information")
         tutorialButton.bounds = Rectangle(910,420,270,60)
         tutorialButton.font = baseFont
         tutorialButton.addActionListener(this)     // Handle any clicks
-        //add(tutorialButton)
+        add(tutorialButton)
 
     }
 

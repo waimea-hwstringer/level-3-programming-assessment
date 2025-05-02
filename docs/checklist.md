@@ -134,4 +134,4 @@ The program has been tested to be **robust**:
 - [x] With a **comprehensive and thorough** test plan
 - [x] Testing **regularly** throughput development, allowing **time for debugging**
 - [ ] Using test values that cover **invalid** (unexpected) cases
-- [ ] Resulting in a program that **copes appropriately** with invalid inputs
+- [x] Resulting in a program that **copes appropriately** with invalid inputs
