@@ -127,7 +127,7 @@ the player finds three or more special items, it is classed as a win. Additional
 if the player attains every single item in the vessel there should be a special
 message rewarding them.
 
-### Test Data To Use
+### Test Data Used
 
 - Collect three special items (worst win scenario)
 - Collect four special items (worst win scenario - same score as 3 items)
@@ -206,16 +206,16 @@ didn't die closing the popup will let them reenter the submarine to gather more 
 ### Test Result
 
 Quitting the game:
-![example.png](screenshots/quit.gif)
+![quiting the game quits the program](screenshots/quit.gif)
 
 Replaying the game: (resets inventory & O2, location & room contents)
-![example.png](screenshots/replay.gif)
+![player replays, resets game](screenshots/replay.gif)
 
 Closing death popup quits the program:
-![example.png](screenshots/closeDeath.gif)
+![player dies, game quits](screenshots/closeDeath.gif)
 
 Closing submersible popup allows player to continue playing:
-![example.png](screenshots/closeSubmersible.gif)
+![player can return back to submarine](screenshots/closeSubmersible.gif)
 
 Both the quit & replay button work as intended. Closing the popup menu in the two different scenarios also functions as intended.
 
@@ -260,30 +260,9 @@ When a button gets disabled, it should be greyed out. Clicking it will not do an
 
 ### Test Result
 
-![example.png](screenshots/disabledButtons.gif)
+![when buttons are disabled, they can't be clicked](screenshots/disabledButtons.gif)
 
 When clicking all buttons that are disabled, nothing happens. This works as intended.
 
 ---
 
-
-## Moving Through The Map
-
-This is to test that the player can move between different locations on the map. There are four main movement
-buttons: up, down, left & right. The buttons should only be enabled if there is a room in that position. Eg.
-if the player is in room1 and room2 is to the right of room1, the only movement button enabled would be the
-right button.
-
-### Test Data Used
-
-In the Sea, only the
-up button should be enabled. Main entrance is above the sea, and in that room all movement buttons should be
-available. Next, to the right is the East Corridor. In that room, only the down button should be disabled.
-
-### Test Result
-
-![example.png](screenshots/example.png)
-
-Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result. Comment on test result.
-
----

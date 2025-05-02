@@ -225,18 +225,4 @@ When disabled buttons are clicked nothing should happen
 ---
 
 
-## Example
-
-Example test description. Example test description. Example test description. Example test description. Example test description. Example test description.
-
-### Test Data To Use
-
-Details of test data and reasons for selection. Details of test data and reasons for selection. Details of test data and reasons for selection.
-
-### Expected Test Result
-
-Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen. Statement detailing what should happen.
-
----
-
 
