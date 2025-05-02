@@ -10,7 +10,7 @@
 - Designed submarine map layout with many interconnected rooms.
 - Implemented Room class with directional links and item storage.
 
-![map sketch](screenshots/map-sketch.png)
+![first rough map](screenshots/earlyMap.png)
 
 ---
 
