@@ -8,13 +8,7 @@ This is a programming project for **NCEA Level 3**, assessed against standard [9
 
 The project is written in the [Kotlin](https://kotlinlang.org) programming language and demonstrates a number of **complex programming techniques**:
 - Programming a graphical user interface (GUI)
-- Reading from, or writing to, files
 - Object-oriented programming (OOP) classes and objects
-- Self-defined types
-- Using non-core API, library or framework 
-- Using complex data structures (e.g. stacks, queues, trees)
-
-**EDIT LIST ABOVE TO MATCH YOUR PROJECT** <- only need two
 
 ---
 
@@ -29,5 +23,7 @@ The project is written in the [Kotlin](https://kotlinlang.org) programming langu
 ## Project Description
 
 
-**PLACE YOUR PROJECT DESCRIPTION HERE**
+The Triton – Treasure Seeker is a turn-based exploration game where the player controls a diver searching an abandoned submarine for hidden treasure. The submarine is made up of interconnected rooms, each with unique layouts and hazards. Players must manage their limited oxygen supply while navigating through the submarine, making strategic choices about where to explore next.
+
+The game features a graphical user interface built with Swing, and the internal structure is designed using object-oriented programming principles. The layout of the submarine, player movement, and oxygen system are all handled through custom logic that responds to player input and game state.
 
