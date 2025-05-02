@@ -274,4 +274,12 @@ For this test, I lowered the MAX_OXYGEN value to 5. I should be able to make 5 m
 ### Test Result
 ![player moves 5 times and popup opens](screenshots/maxox5.gif)
 
+## Boundary Case: Map
 
+### Test Data Used
+For this test, I explored all the rooms at the edge of the map. 
+
+### Test Result
+![player moves around map](screenshots/boundaryWalls.gif)
+
+The player couldn't move past the boundaries as intended.
